@@ -19,3 +19,15 @@ local.properties
 .classpath
 .project
 .settings/
+
+# Android Studio
+.gradle/
+.idea/
+app/
+bomberman.iml
+build.gradle
+gradle/
+gradlew
+gradlew.bat
+import-summary.txt
+settings.gradle
