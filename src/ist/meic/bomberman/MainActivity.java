@@ -1,8 +1,9 @@
 package ist.meic.bomberman;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends Activity {
 
@@ -11,12 +12,17 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	
+	public void singleplayer(View v) {
+		Intent intent = new Intent(MainActivity.this, SingleplayerActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(intent);
+	}
+	
+	public void multiplayer(View v) {
+		Intent intent = new Intent(MainActivity.this, MultiplayerActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(intent);
 	}
 
 }
