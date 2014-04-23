@@ -40,7 +40,8 @@
             android:layout_marginLeft="22dp"
             android:background="@drawable/game_button"
             android:text="quit"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="onQuit" />
 
         <Button
             android:id="@+id/downButton"

@@ -1,9 +1,11 @@
 package ist.meic.bomberman;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
@@ -31,5 +33,12 @@ public class GameActivity extends Activity {
 		text.setBackgroundColor(Color.YELLOW);
 		text.setWidth(width);
 
+	}
+	
+	public void onQuit(View view) {
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 }
