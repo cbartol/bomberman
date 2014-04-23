@@ -1,5 +1,6 @@
 package ist.meic.bomberman;
 
+import ist.meic.bomberman.engine.MapProperties;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,6 +33,10 @@ public class GameActivity extends Activity {
 		text = (TextView) findViewById(R.id.numberPlayers);
 		text.setBackgroundColor(Color.YELLOW);
 		text.setWidth(width);
+		
+
+		// Testing purposes
+		new MapProperties(this, 1);
 
 	}
 	

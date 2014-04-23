@@ -5,4 +5,4 @@ explosion.duration=2
 explosion.range=3
 robot.speed=1
 robot.killed.points=5
-opponent.killed.point=10
+opponent.killed.points=10
