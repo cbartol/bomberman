@@ -52,7 +52,8 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/game_button"
             android:text="v"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="moveDown" />
 
         <Button
             android:id="@+id/leftButton"
@@ -63,7 +64,8 @@
             android:layout_toLeftOf="@+id/downButton"
             android:background="@drawable/game_button"
             android:text="&lt;"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="moveLeft" />
 
         <Button
             android:id="@+id/rightButton"
@@ -74,7 +76,8 @@
             android:layout_toRightOf="@+id/downButton"
             android:background="@drawable/game_button"
             android:text=">"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="moveRight" />
 
         <Button
             android:id="@+id/upButton"
@@ -85,7 +88,8 @@
             android:layout_toLeftOf="@+id/rightButton"
             android:background="@drawable/game_button"
             android:text="^"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="moveUp" />
 
         <Button
             android:id="@+id/pauseButton"
@@ -97,7 +101,8 @@
             android:layout_alignLeft="@+id/quitButton"
             android:background="@drawable/game_button"
             android:text="pause"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="onPause" />
 
         <Button
             android:id="@+id/bombButton"
@@ -110,7 +115,8 @@
             android:layout_marginRight="18dp"
             android:background="@drawable/game_button"
             android:text="bomb"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:onClick="placeBomb" />
     </RelativeLayout>
 
     <RelativeLayout
