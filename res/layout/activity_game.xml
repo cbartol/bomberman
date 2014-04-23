@@ -1,0 +1,160 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="ist.meic.bomberman.GameActivity" >
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_above="@+id/buttonArea"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/infoArea"
+        android:background="@android:color/holo_purple"
+        android:columnCount="1" >
+
+        <TextView
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_row="0"
+            android:text="game area" />
+    </GridLayout>
+
+    <RelativeLayout
+        android:id="@+id/buttonArea"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+
+        <Button
+            android:id="@+id/quitButton"
+            style="@style/ActionGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="22dp"
+            android:background="@drawable/game_button"
+            android:text="quit"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/downButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/quitButton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/game_button"
+            android:text="v"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/leftButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/downButton"
+            android:layout_toLeftOf="@+id/downButton"
+            android:background="@drawable/game_button"
+            android:text="&lt;"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/rightButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/downButton"
+            android:layout_toRightOf="@+id/downButton"
+            android:background="@drawable/game_button"
+            android:text=">"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/upButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rightButton"
+            android:layout_toLeftOf="@+id/rightButton"
+            android:background="@drawable/game_button"
+            android:text="^"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/pauseButton"
+            style="@style/ActionGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/leftButton"
+            android:layout_alignBottom="@+id/leftButton"
+            android:layout_alignLeft="@+id/quitButton"
+            android:background="@drawable/game_button"
+            android:text="pause"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bombButton"
+            style="@style/ActionGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/rightButton"
+            android:layout_alignBottom="@+id/rightButton"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/game_button"
+            android:text="bomb"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/infoArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+
+        <TextView
+            android:id="@+id/numberPlayers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/playerName"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Number Players" />
+
+        <TextView
+            android:id="@+id/playerName"
+            android:layout_width="104dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/numberPlayers"
+            android:layout_toRightOf="@+id/timeLeft"
+            android:text="Player Name" />
+
+        <TextView
+            android:id="@+id/playerScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/timeLeft"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Player Score" />
+
+        <TextView
+            android:id="@+id/timeLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/playerName"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/playerScore"
+            android:text="Time Left" />
+    </RelativeLayout>
+
+</RelativeLayout>
