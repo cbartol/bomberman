@@ -6,8 +6,8 @@
     tools:context="ist.meic.bomberman.GameActivity" >
 
     <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/buttonArea"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -115,7 +115,7 @@
     <RelativeLayout
         android:id="@+id/infoArea"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
