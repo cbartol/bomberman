@@ -1,36 +1,76 @@
 package ist.meic.bomberman;
 
+import ist.meic.bomberman.engine.MapProperties;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SingleplayerActivity extends Activity {
+	private int levels = 1;
+	private MapProperties selectedMap = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_singleplayer);
+		Resources res = getResources();
+		levels = res.getInteger(R.integer.max_levels);
+		addItemsOnLevelSpinner();
 	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Button myButton = (Button) findViewById(R.id.continuegame);
-		myButton.setBackgroundColor(R.drawable.black_button);
-		myButton.setEnabled(false);
-	}
-	
+
 	@Override
 	public void onBackPressed() {
-	    super.onBackPressed();
-	    SingleplayerActivity.this.overridePendingTransition(0, 0);
+		super.onBackPressed();
+		SingleplayerActivity.this.overridePendingTransition(0, 0);
+	}
+
+	public void newGame(View v) {
+		Intent intent = new Intent(SingleplayerActivity.this,
+				GameActivity.class);
+		// intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(intent);
+	}
+
+	public void addItemsOnLevelSpinner() {
+		Spinner spinner = (Spinner) findViewById(R.id.levelSpinner);
+		List<String> list = new ArrayList<String>();
+		for(int i = 1 ; i <= levels ; i++){
+			list.add("level " + i);
+		}
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, list);
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(dataAdapter);
+		final SingleplayerActivity context = this;
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+				int level = pos +1;
+				context.setLevel(level);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {}
+		});
 	}
 	
-	public void newGame(View v) {
-		Intent intent = new Intent(SingleplayerActivity.this, GameActivity.class);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		startActivity(intent);
+	private void setLevel(int level){
+		selectedMap = new MapProperties(this, level);
+		TextView levelTitle = (TextView) findViewById(R.id.levelTitle);
+		levelTitle.setText(selectedMap.getName());
 	}
 }

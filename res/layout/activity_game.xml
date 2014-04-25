@@ -39,7 +39,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="22dp"
             android:background="@drawable/game_button"
-            android:text="quit"
+            android:text="@string/quit_button"
             android:textSize="12sp"
             android:onClick="onQuit" />
 
@@ -51,7 +51,7 @@
             android:layout_alignBottom="@+id/quitButton"
             android:layout_centerHorizontal="true"
             android:background="@drawable/game_button"
-            android:text="v"
+            android:text="@string/arrow_down"
             android:textSize="12sp"
             android:onClick="moveDown" />
 
@@ -63,7 +63,7 @@
             android:layout_above="@+id/downButton"
             android:layout_toLeftOf="@+id/downButton"
             android:background="@drawable/game_button"
-            android:text="&lt;"
+            android:text="@string/arrow_left"
             android:textSize="12sp"
             android:onClick="moveLeft" />
 
@@ -75,7 +75,7 @@
             android:layout_above="@+id/downButton"
             android:layout_toRightOf="@+id/downButton"
             android:background="@drawable/game_button"
-            android:text=">"
+            android:text="@string/arrow_right"
             android:textSize="12sp"
             android:onClick="moveRight" />
 
@@ -87,7 +87,7 @@
             android:layout_above="@+id/rightButton"
             android:layout_toLeftOf="@+id/rightButton"
             android:background="@drawable/game_button"
-            android:text="^"
+            android:text="@string/arrow_up"
             android:textSize="12sp"
             android:onClick="moveUp" />
 
@@ -100,7 +100,7 @@
             android:layout_alignBottom="@+id/leftButton"
             android:layout_alignLeft="@+id/quitButton"
             android:background="@drawable/game_button"
-            android:text="pause"
+            android:text="@string/pause_button"
             android:textSize="12sp"
             android:onClick="onPause" />
 
@@ -114,7 +114,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="18dp"
             android:background="@drawable/game_button"
-            android:text="bomb"
+            android:text="@string/bomb_button"
             android:textSize="12sp"
             android:onClick="placeBomb" />
     </RelativeLayout>

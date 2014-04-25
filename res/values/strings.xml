@@ -7,12 +7,18 @@
     <string name="createserver">Create Server</string>
     <string name="joinserver">Join Server</string>
     <string name="multiplayer">Multiplayer</string>
-    <string name="newgame">New Game</string>
+    <string name="start">Start</string>
     <string name="singleplayer">Singleplayer</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_xxxxxx">XXXXXX</string>
     <string name="hello_world">Hello world!</string>
+    <string name="pause_button">pause</string>
+    <string name="bomb_button">bomb</string>
+    <string name="quit_button">quit</string>
+    <string name="arrow_up">\u028C</string>
+    <string name="arrow_down">v</string>
+    <string name="arrow_left">\u003C</string>
+    <string name="arrow_right">\u003E</string>
 
 </resources>
