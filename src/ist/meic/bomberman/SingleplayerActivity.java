@@ -9,10 +9,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,6 +29,9 @@ public class SingleplayerActivity extends Activity {
 		Resources res = getResources();
 		levels = res.getInteger(R.integer.max_levels);
 		addItemsOnLevelSpinner();
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+//		((ImageView) findViewById(R.id.mapView)).setMaxWidth(dm.widthPixels);
 	}
 
 	@Override
@@ -39,6 +44,7 @@ public class SingleplayerActivity extends Activity {
 		Intent intent = new Intent(SingleplayerActivity.this,
 				GameActivity.class);
 		// intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		intent.putExtra("level", selectedMap.getLevel());
 		startActivity(intent);
 	}
 
@@ -72,5 +78,8 @@ public class SingleplayerActivity extends Activity {
 		selectedMap = new MapProperties(this, level);
 		TextView levelTitle = (TextView) findViewById(R.id.levelTitle);
 		levelTitle.setText(selectedMap.getName());
+		ImageView preview = (ImageView) findViewById(R.id.mapView);
+		int mapId = getResources().getIdentifier("map" + selectedMap.getLevel() + "_preview", "drawable", getPackageName());
+		preview.setImageDrawable(getResources().getDrawable(mapId));
 	}
 }

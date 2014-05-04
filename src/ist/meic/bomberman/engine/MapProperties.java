@@ -20,9 +20,11 @@ public class MapProperties {
 	private int robotSpeed;
 	private int robotKilledPoints;
 	private int playerKilledPoints;
+	private int level;
 	
 	public MapProperties(Activity activity, int level) {
 		readPropertiesFile(activity, level);
+		this.level = level;
 	}
 	
 	private void readPropertiesFile(Activity activity, int level) {
@@ -95,5 +97,8 @@ public class MapProperties {
 	}
 	public int getPlayerKilledPoints() {
 		return playerKilledPoints;
+	}
+	public int getLevel(){
+		return level;
 	}
 }

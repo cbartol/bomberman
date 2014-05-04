@@ -1,18 +1,28 @@
 package ist.meic.bomberman;
 
+import ist.meic.bomberman.engine.Direction;
+import ist.meic.bomberman.engine.Game;
 import ist.meic.bomberman.engine.MapProperties;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameActivity extends Activity {
+	private Game game;
+	private MapProperties mapProperties;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mapProperties = new MapProperties(this, getIntent().getIntExtra("level", 1));
 		setContentView(R.layout.activity_game);
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -33,11 +43,18 @@ public class GameActivity extends Activity {
 		text = (TextView) findViewById(R.id.numberPlayers);
 		text.setBackgroundColor(Color.YELLOW);
 		text.setWidth(width);
-		
 
-		// Testing purposes
-		new MapProperties(this, 1);
-
+		startGame();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		game.endGame();
+		super.onDestroy();
+	}
+	
+	public void startGame(){
+		game = new Game(this, (RelativeLayout) findViewById(R.id.gameArea), mapProperties);
 	}
 	
 	public void onQuit(View v) {
@@ -52,22 +69,27 @@ public class GameActivity extends Activity {
 	}
 	
 	public void placeBomb(View v) {
-		// add code for placing bombs
+		RelativeLayout layout = (RelativeLayout) findViewById(R.id.gameArea);
+		ImageView image = game.getImage();
+		
+		Log.i("Layout", "x: " + layout.getWidth() + " y: " + layout.getHeight());
+		Log.i("Image", "getWidth: " + image.getWidth() + " getHeight: " + image.getHeight());
+		Log.i("Image", "getLeft: " + image.getLeft() + " getTop: " + image.getTop());
 	}
 	
 	public void moveUp(View v) {
-		// add code for moving up
+		game.movePlayer(1, Direction.UP);
 	}
 	
 	public void moveDown(View v) {
-		// add code for moving down
+		game.movePlayer(1, Direction.DOWN);
 	}
 	
 	public void moveLeft(View v) {
-		// add code for moving left
+		game.movePlayer(1, Direction.LEFT);
 	}
 	
 	public void moveRight(View v) {
-		// add code for moving right
+		game.movePlayer(1, Direction.RIGHT);
 	}
 }
