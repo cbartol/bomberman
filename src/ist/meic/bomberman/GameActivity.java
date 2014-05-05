@@ -2,18 +2,15 @@ package ist.meic.bomberman;
 
 import ist.meic.bomberman.engine.Direction;
 import ist.meic.bomberman.engine.Game;
+import ist.meic.bomberman.engine.GameMapView;
 import ist.meic.bomberman.engine.MapProperties;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GameActivity extends Activity {
 	private Game game;
@@ -54,7 +51,7 @@ public class GameActivity extends Activity {
 	}
 	
 	public void startGame(){
-		game = new Game(this, (RelativeLayout) findViewById(R.id.gameArea), mapProperties);
+		game = new Game(this, (GameMapView) findViewById(R.id.gameAreaSinglePlayer), mapProperties, 1);
 	}
 	
 	public void onQuit(View v) {
@@ -69,12 +66,6 @@ public class GameActivity extends Activity {
 	}
 	
 	public void placeBomb(View v) {
-		RelativeLayout layout = (RelativeLayout) findViewById(R.id.gameArea);
-		ImageView image = game.getImage();
-		
-		Log.i("Layout", "x: " + layout.getWidth() + " y: " + layout.getHeight());
-		Log.i("Image", "getWidth: " + image.getWidth() + " getHeight: " + image.getHeight());
-		Log.i("Image", "getLeft: " + image.getLeft() + " getTop: " + image.getTop());
 	}
 	
 	public void moveUp(View v) {
