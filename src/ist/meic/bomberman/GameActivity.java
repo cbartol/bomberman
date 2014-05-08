@@ -66,6 +66,7 @@ public class GameActivity extends Activity {
 	}
 	
 	public void placeBomb(View v) {
+		game.dropBomb(this, 1);
 	}
 	
 	public void moveUp(View v) {

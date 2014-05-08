@@ -9,8 +9,8 @@ public class Player extends Entity {
 	private int score = 0;
 	private boolean alive = true;
 
-	public Player(int id, Context c, int x, int y) {
-		super(c, R.drawable.bomberman, x, y);
+	public Player(int id, Context c, int dyingPoints, int x, int y) {
+		super(c, R.drawable.bomberman, dyingPoints, x, y);
 		this.id = id;
 	}
 
@@ -35,10 +35,11 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void destroy() {
+	public int destroy() {
 		if (alive) {
 			alive = false;
-			super.destroy();
+			return super.destroy();
 		}
+		return 0;
 	}
 }

@@ -52,7 +52,7 @@ public class SingleplayerActivity extends Activity {
 		Spinner spinner = (Spinner) findViewById(R.id.levelSpinner);
 		List<String> list = new ArrayList<String>();
 		for(int i = 1 ; i <= levels ; i++){
-			list.add("level " + i);
+			list.add("Level " + i);
 		}
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, list);

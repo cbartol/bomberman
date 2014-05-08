@@ -1,6 +1,6 @@
 level.name=level 1
 game.duration=100000
-explosion.timeout=5
+explosion.timeout=2
 explosion.duration=2
 explosion.range=3
 robot.speed=1

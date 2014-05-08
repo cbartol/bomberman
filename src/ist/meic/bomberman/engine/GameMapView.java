@@ -31,6 +31,7 @@ public class GameMapView extends SurfaceView implements SurfaceHolder.Callback{
 	
 	@Override
 	protected void onDraw(Canvas realCanvas) {
+//		super.onDraw(realCanvas); // uncomment this line and comment the rest of the method to edit activity_game.xml 
 		if(firstTimeDraw){ //omg... plz optimize this...  I can't get the size of the view anywhere else.
 			firstTimeDraw = false;
 			final int viewWidth = getWidth();
