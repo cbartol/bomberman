@@ -2,9 +2,11 @@ package ist.meic.bomberman;
 
 import ist.meic.bomberman.wifi.WiFiDirectBroadcastReceiver;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,7 +14,16 @@ public class MultiplayerActivity extends Activity {
 	
 	WiFiDirectBroadcastReceiver mReceiver;
 	WifiP2pManager mManager;
+	Channel mChannel;
 	IntentFilter filter;
+	
+	public WifiP2pManager getManager() {
+		return mManager;
+	}
+	
+	public Channel getChannel() {
+		return mChannel;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +35,8 @@ public class MultiplayerActivity extends Activity {
 	    filter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
 	    filter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
 	    filter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+	    mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+	    mChannel = mManager.initialize(this, getMainLooper(), null);
 		mReceiver = new WiFiDirectBroadcastReceiver(this);
 		registerReceiver(mReceiver, filter);
 	}

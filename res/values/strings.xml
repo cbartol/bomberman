@@ -26,5 +26,8 @@
     <string name="number_players">Number Players:</string>
     <string name="title_activity_create_server">CreateServerActivity</string>
     <string name="title_activity_find_server">FindServerActivity</string>
+    <string name="label_servers">Available Servers</string>
+    <string name="empty_message">No servers available</string>
+    <string name="search_server">Search Servers</string>
 
 </resources>
