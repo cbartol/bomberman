@@ -77,8 +77,11 @@
         </activity>
         <activity
             android:name="ist.meic.bomberman.FindServerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_find_server"
-            android:parentActivityName="ist.meic.bomberman.MultiplayerActivity" >
+            android:parentActivityName="ist.meic.bomberman.MultiplayerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ist.meic.bomberman.MultiplayerActivity" />
