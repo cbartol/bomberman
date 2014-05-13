@@ -54,7 +54,7 @@ public class FindServerActivity extends MultiplayerActivity implements DeviceAct
 		super.onBackPressed();
 		FindServerActivity.this.overridePendingTransition(0, 0);
 	}
-
+	
 	@Override
 	public void showDetails(WifiP2pDevice device) {
 		// TODO Auto-generated method stub
