@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@android:color/holo_blue_dark"
     tools:context="ist.meic.bomberman.GameActivity" >
 
     <ist.meic.bomberman.engine.GameMapView
@@ -13,14 +13,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/infoArea"
-        android:background="#ffffff"
+        android:background="@android:color/holo_blue_dark"
         android:columnCount="1" >
     </ist.meic.bomberman.engine.GameMapView>
 
     <RelativeLayout
         android:id="@+id/buttonArea"
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true" >
 

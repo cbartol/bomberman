@@ -4,9 +4,11 @@ import ist.meic.bomberman.R;
 import android.content.Context;
 
 public class ExplosionPart extends DrawableObject {
-
-	public ExplosionPart(Context c, Direction direction, boolean end, int x, int y) {
+	private int playerOwner;
+	
+	public ExplosionPart(Context c, int playerOwner, Direction direction, boolean end, int x, int y) {
 		super(c, calculateImageId(direction, end), x, y);
+		this.playerOwner = playerOwner;
 	}
 
 	private static int calculateImageId(Direction direction, boolean end){
@@ -29,5 +31,9 @@ public class ExplosionPart extends DrawableObject {
 			}
 		}
 		return 0;
+	}
+	
+	public int getPlayerOwner(){
+		return playerOwner;
 	}
 }

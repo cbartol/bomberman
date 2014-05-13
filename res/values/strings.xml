@@ -24,5 +24,7 @@
     <string name="player_score">Player Score:</string>
     <string name="player_name">Player Name:</string>
     <string name="number_players">Number Players:</string>
+    <string name="you_won">Winner</string>
+    <string name="you_lost">Game Over</string>
 
 </resources>

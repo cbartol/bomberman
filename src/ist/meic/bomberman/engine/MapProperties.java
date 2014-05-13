@@ -13,13 +13,13 @@ import android.app.Activity;
 public class MapProperties {
 	
 	private String name;
-	private double gameDuration;
+	private int gameDuration;
 	private double explosionTimeout;
 	private double explosionDuration;
 	private int explosionRange;
 	private double robotSpeed;
-	private double robotKilledPoints;
-	private double playerKilledPoints;
+	private int robotKilledPoints;
+	private int playerKilledPoints;
 	private int level;
 	
 	public MapProperties(Activity activity, int level) {
@@ -54,13 +54,13 @@ public class MapProperties {
 		try {
 			mapProperties.load(stream);
 			name = mapProperties.getProperty("level.name");
-			gameDuration = Double.parseDouble(mapProperties.getProperty("game.duration"));
+			gameDuration = Integer.parseInt(mapProperties.getProperty("game.duration"));
 			explosionTimeout = Double.parseDouble(mapProperties.getProperty("explosion.timeout"));
 			explosionDuration = Double.parseDouble(mapProperties.getProperty("explosion.duration"));
 			explosionRange = Integer.parseInt(mapProperties.getProperty("explosion.range"));
 			robotSpeed = Double.parseDouble(mapProperties.getProperty("robot.speed"));
-			robotKilledPoints = Double.parseDouble(mapProperties.getProperty("robot.killed.points"));
-			playerKilledPoints = Double.parseDouble(mapProperties.getProperty("opponent.killed.points"));
+			robotKilledPoints = Integer.parseInt(mapProperties.getProperty("robot.killed.points"));
+			playerKilledPoints = Integer.parseInt(mapProperties.getProperty("opponent.killed.points"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,7 +77,7 @@ public class MapProperties {
 	public String getName() {
 		return name;
 	}
-	public double getGameDuration() {
+	public int getGameDuration() {
 		return gameDuration;
 	}
 	public double getExplosionTimeout() {
@@ -92,10 +92,10 @@ public class MapProperties {
 	public double getRobotSpeed() {
 		return robotSpeed;
 	}
-	public double getRobotKilledPoints() {
+	public int getRobotKilledPoints() {
 		return robotKilledPoints;
 	}
-	public double getPlayerKilledPoints() {
+	public int getPlayerKilledPoints() {
 		return playerKilledPoints;
 	}
 	public int getLevel(){

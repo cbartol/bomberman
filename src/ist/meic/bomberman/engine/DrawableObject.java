@@ -52,7 +52,7 @@ public abstract class DrawableObject {
 		return coord*MATRIX_TO_PIXEL;
 	}
 	
-	public double destroy(){
+	public int destroy(){
 		return 0;
 	}
 }
