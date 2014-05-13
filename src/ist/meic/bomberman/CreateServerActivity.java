@@ -1,9 +1,9 @@
 package ist.meic.bomberman;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 public class CreateServerActivity extends MultiplayerActivity {
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

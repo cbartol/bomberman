@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -25,6 +26,7 @@ public class MultiplayerActivity extends Activity {
 		return mChannel;
 	}
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class MultiplayerActivity extends Activity {
 	    filter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 	    mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
 	    mChannel = mManager.initialize(this, getMainLooper(), null);
+
 		mReceiver = new WiFiDirectBroadcastReceiver(this);
 		registerReceiver(mReceiver, filter);
 	}
