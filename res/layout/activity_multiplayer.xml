@@ -10,7 +10,7 @@
     tools:context=".MultiplayerActivity" >
 
     <Button
-        android:id="@+id/joinserver"
+        android:id="@+id/findserver"
         style="@style/ButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,17 +18,19 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/purple_button"
-        android:text="@string/joinserver" />
+        android:onClick="findserver"
+        android:text="@string/findserver" />
 
     <Button
         android:id="@+id/createserver"
         style="@style/ButtonText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/joinserver"
+        android:layout_above="@+id/findserver"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/purple_button"
+        android:onClick="createserver"
         android:text="@string/createserver" />
 
 </RelativeLayout>
