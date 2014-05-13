@@ -6,9 +6,7 @@ import ist.meic.bomberman.engine.GameMapView;
 import ist.meic.bomberman.engine.MapProperties;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,25 +19,18 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		mapProperties = new MapProperties(this, getIntent().getIntExtra("level", 1));
 		setContentView(R.layout.activity_game);
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		final int width = dm.widthPixels / 4;
 		
 		TextView text = (TextView) findViewById(R.id.playerName);
-		text.setBackgroundColor(Color.RED);
-		text.setWidth(width);
+		text.setText(getString(R.string.player_name) + "\nplayer1");
 		
 		text = (TextView) findViewById(R.id.playerScore);
-		text.setBackgroundColor(Color.BLUE);
-		text.setWidth(width);
+		text.setText(getString(R.string.player_score) + "\n0");
 		
 		text = (TextView) findViewById(R.id.timeLeft);
-		text.setBackgroundColor(Color.GREEN);
-		text.setWidth(width);
+		text.setText(getString(R.string.time_left) + "\n" + mapProperties.getGameDuration());
 
 		text = (TextView) findViewById(R.id.numberPlayers);
-		text.setBackgroundColor(Color.YELLOW);
-		text.setWidth(width);
+		text.setText(getString(R.string.number_players) + "\n1");
 
 		startGame();
 	}

@@ -38,7 +38,7 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/hello_world"
         android:scaleType="centerInside"
-        android:src="@drawable/playground" />
+        android:src="@drawable/map1_preview" />
 
     <Spinner
         android:id="@+id/levelSpinner"

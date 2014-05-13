@@ -13,13 +13,13 @@ import android.app.Activity;
 public class MapProperties {
 	
 	private String name;
-	private long gameDuration;
-	private int explosionTimeout;
-	private int explosionDuration;
+	private double gameDuration;
+	private double explosionTimeout;
+	private double explosionDuration;
 	private int explosionRange;
-	private int robotSpeed;
-	private int robotKilledPoints;
-	private int playerKilledPoints;
+	private double robotSpeed;
+	private double robotKilledPoints;
+	private double playerKilledPoints;
 	private int level;
 	
 	public MapProperties(Activity activity, int level) {
@@ -54,13 +54,13 @@ public class MapProperties {
 		try {
 			mapProperties.load(stream);
 			name = mapProperties.getProperty("level.name");
-			gameDuration = Long.parseLong(mapProperties.getProperty("game.duration"));
-			explosionTimeout = Integer.parseInt(mapProperties.getProperty("explosion.timeout"));
-			explosionDuration = Integer.parseInt(mapProperties.getProperty("explosion.duration"));
+			gameDuration = Double.parseDouble(mapProperties.getProperty("game.duration"));
+			explosionTimeout = Double.parseDouble(mapProperties.getProperty("explosion.timeout"));
+			explosionDuration = Double.parseDouble(mapProperties.getProperty("explosion.duration"));
 			explosionRange = Integer.parseInt(mapProperties.getProperty("explosion.range"));
-			robotSpeed = Integer.parseInt(mapProperties.getProperty("robot.speed"));
-			robotKilledPoints = Integer.parseInt(mapProperties.getProperty("robot.killed.points"));
-			playerKilledPoints = Integer.parseInt(mapProperties.getProperty("opponent.killed.points"));
+			robotSpeed = Double.parseDouble(mapProperties.getProperty("robot.speed"));
+			robotKilledPoints = Double.parseDouble(mapProperties.getProperty("robot.killed.points"));
+			playerKilledPoints = Double.parseDouble(mapProperties.getProperty("opponent.killed.points"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,25 +77,25 @@ public class MapProperties {
 	public String getName() {
 		return name;
 	}
-	public long getGameDuration() {
+	public double getGameDuration() {
 		return gameDuration;
 	}
-	public int getExplosionTimeout() {
+	public double getExplosionTimeout() {
 		return explosionTimeout;
 	}
-	public int getExplosionDuration() {
+	public double getExplosionDuration() {
 		return explosionDuration;
 	}
 	public int getExplosionRange() {
 		return explosionRange;
 	}
-	public int getRobotSpeed() {
+	public double getRobotSpeed() {
 		return robotSpeed;
 	}
-	public int getRobotKilledPoints() {
+	public double getRobotKilledPoints() {
 		return robotKilledPoints;
 	}
-	public int getPlayerKilledPoints() {
+	public double getPlayerKilledPoints() {
 		return playerKilledPoints;
 	}
 	public int getLevel(){

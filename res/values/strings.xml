@@ -20,5 +20,9 @@
     <string name="arrow_down">v</string>
     <string name="arrow_left">\u003C</string>
     <string name="arrow_right">\u003E</string>
+    <string name="time_left">Time Left:</string>
+    <string name="player_score">Player Score:</string>
+    <string name="player_name">Player Name:</string>
+    <string name="number_players">Number Players:</string>
 
 </resources>

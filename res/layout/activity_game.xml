@@ -13,10 +13,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/infoArea"
-        android:background="#50a000"
+        android:background="#ffffff"
         android:columnCount="1" >
-
-
     </ist.meic.bomberman.engine.GameMapView>
 
     <RelativeLayout
@@ -32,12 +30,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/downButton"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/downButton"
             android:background="@drawable/game_button"
+            android:onClick="moveLeft"
             android:text="@string/arrow_left"
-            android:layout_marginRight="10dp"
-            android:textSize="12sp"
-            android:onClick="moveLeft" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/rightButton"
@@ -45,12 +43,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/downButton"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/downButton"
             android:background="@drawable/game_button"
+            android:onClick="moveRight"
             android:text="@string/arrow_right"
-            android:layout_marginLeft="10dp"
-            android:textSize="12sp"
-            android:onClick="moveRight" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/upButton"
@@ -60,9 +58,9 @@
             android:layout_above="@+id/rightButton"
             android:layout_toLeftOf="@+id/rightButton"
             android:background="@drawable/game_button"
+            android:onClick="moveUp"
             android:text="@string/arrow_up"
-            android:textSize="12sp"
-            android:onClick="moveUp" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/downButton"
@@ -115,52 +113,40 @@
             android:onClick="onPause"
             android:text="@string/pause_button"
             android:textSize="12sp" />
-
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/infoArea"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
-
-        <TextView
-            android:id="@+id/numberPlayers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/playerName"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="Number Players" />
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/playerName"
-            android:layout_width="104dp"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/numberPlayers"
-            android:layout_toRightOf="@+id/timeLeft"
-            android:text="Player Name" />
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/player_name" />
 
         <TextView
             android:id="@+id/playerScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/timeLeft"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="Player Score" />
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/player_score" />
 
         <TextView
             android:id="@+id/timeLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/playerName"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/playerScore"
-            android:text="Time Left" />
-    </RelativeLayout>
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/time_left" />
+
+        <TextView
+            android:id="@+id/numberPlayers"
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/number_players" />
+    </LinearLayout>
 
 </RelativeLayout>

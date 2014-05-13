@@ -1,8 +1,5 @@
 package ist.meic.bomberman.engine;
 
-import ist.meic.bomberman.R;
-import ist.meic.bomberman.R.raw;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import ist.meic.bomberman.R;
+import ist.meic.bomberman.R.raw;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -39,9 +38,11 @@ public class Game {
 	private char[][] map;
 	private int width; // number of cells of map's width
 	private int height; // number of cells of map's height
+	private int stripeSize = 0;
 	private GameMapView gameMap;
 	private SurfaceHolder surfaceHolder;
 	
+	private List<Wall> walls = Collections.synchronizedList(new LinkedList<Wall>());
 	private List<Bomb> bombs =  Collections.synchronizedList(new LinkedList<Bomb>());
 	private List<Robot> robots =  Collections.synchronizedList(new LinkedList<Robot>());
 	private List<Obstacle> obstacles =  Collections.synchronizedList(new LinkedList<Obstacle>());
@@ -61,10 +62,10 @@ public class Game {
 		this.maxPlayers = maxPlayers;
 		gameMap = gameArea;
 		surfaceHolder = gameMap.getHolder();
-		setMapBackgroud(a);
 		readMapFile(a, mapProperties.getLevel());
+		setMapBackgroud(a);
 		mHandler = new Handler();
-		final int robotSpeed = mapProperties.getRobotSpeed();
+		final double robotSpeed = mapProperties.getRobotSpeed();
 		moveRobots = new Runnable() {
 			@Override
 			public synchronized void run() {
@@ -72,10 +73,10 @@ public class Game {
 					moveRobots();
 				}
 				draw();
-				mHandler.postDelayed(moveRobots, 1000/robotSpeed);
+				mHandler.postDelayed(moveRobots,(long) (1000/robotSpeed));
 			}
 		};
-		mHandler.postDelayed(moveRobots, 1000/robotSpeed);
+		mHandler.postDelayed(moveRobots,  (long) (1000/robotSpeed));
 	}
 	
 	private void readMapFile(Activity activity, int level) {
@@ -86,17 +87,12 @@ public class Game {
 		try {
 			f = c.getField(levelName);
 		} catch (NoSuchFieldException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		int levelConfig = 0;
 		try {
 			levelConfig = f.getInt(f);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e){
 			e.printStackTrace();
 		}
 		
@@ -119,7 +115,9 @@ public class Game {
 			for(int j = 0 ; j < width ; j++){
 				char object = rawMap.get(i).charAt(j);
 				this.map[i][j] = object;
-				if(object == ROBOT){
+				if(object == WALL){
+					walls.add(new Wall(activity, j, i));
+				} else if(object == ROBOT){
 					robots.add(new Robot(activity, mapProperties.getRobotKilledPoints(), j, i));
 				} else if(object == OBSTACLE){
 					obstacles.add(new Obstacle(activity, j, i));
@@ -131,12 +129,11 @@ public class Game {
 				}
 			}
 		}
+		stripeSize = walls.get(0).getImage().getWidth();
 	}
 	
 	private void setMapBackgroud(Activity a){
-		int mapId = a.getResources().getIdentifier("map" + mapProperties.getLevel(), "drawable", a.getPackageName());
-		this.gameMap.setGame(this);
-		this.gameMap.setMap(mapId);
+		this.gameMap.setGame(this, width*stripeSize, height*stripeSize);
 	}
 	
 	
@@ -155,7 +152,11 @@ public class Game {
 	}
 	
 	public synchronized void moveRobots(){
-		for (Robot robot : robots) {
+		List<Robot> robotsCopy = new LinkedList<Robot>();
+		synchronized(robots){
+			robotsCopy.addAll(robots);
+		}
+		for (Robot robot : robotsCopy) {
 			move(robot, Direction.random(whereToMove(robot.getX(),robot.getY())), ROBOT);
 			List<Integer> playerIds = playerNear(robot.getX(), robot.getY());
 			for (Integer playerId : playerIds) {
@@ -260,10 +261,10 @@ public class Game {
 				bomb.explode();
 				createExplosion(bomb);
 				draw();
-				mHandler.postDelayed(explosionTimer, 1000*mapProperties.getExplosionDuration());
+				mHandler.postDelayed(explosionTimer, (long) (1000*mapProperties.getExplosionDuration()));
 			}
 		};
-		mHandler.postDelayed(bombTimer, 1000*mapProperties.getExplosionTimeout());
+		mHandler.postDelayed(bombTimer, (long) (1000*mapProperties.getExplosionTimeout()));
 		draw();
 	}
 	
@@ -286,7 +287,7 @@ public class Game {
 		int x, y;
 		
 		//note that one of the variables is set to 0 and the other is 1 or -1
-		int range = mapProperties.getExplosionRange() * incrX + mapProperties.getExplosionRange() * incrY; 
+		final int range = mapProperties.getExplosionRange() * incrX + mapProperties.getExplosionRange() * incrY; 
 		destroy(startX, startY);
 		map[startY][startX] = EXPLOSION;
 		for(x = incrX, y = incrY; x != range && y != range ; x+= incrX, y+=incrY){
@@ -317,13 +318,15 @@ public class Game {
 	private synchronized void destroy(int posX, int posY){
 		final char object = map[posY][posX];
 		if(object == ROBOT){
-			Iterator<Robot> it = robots.iterator();
-			while(it.hasNext()){
-				Robot robot = it.next();
-				if(robot.getX() == posX && robot.getY() == posY){
-					robot.destroy(); //increment player score
-					it.remove();
-					break;
+			synchronized(robots){
+				Iterator<Robot> it = robots.iterator();
+				while(it.hasNext()){
+					Robot robot = it.next();
+					if(robot.getX() == posX && robot.getY() == posY){
+						robot.destroy(); //increment player score
+						it.remove();
+						break;
+					}
 				}
 			}
 		} else if(object > PLAYER && object <= PLAYER + maxPlayers){
@@ -388,6 +391,12 @@ public class Game {
 		for (List<ExplosionPart> drawableObjects : explosionParts.values()) {
 			objects.addAll(drawableObjects);
 		}
+		return objects;
+	}
+	
+	public List<DrawableObject> getFixedObjects(){
+		List<DrawableObject> objects = new LinkedList<DrawableObject>();
+		objects.addAll(walls);
 		return objects;
 	}
 	

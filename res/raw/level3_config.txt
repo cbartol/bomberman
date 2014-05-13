@@ -1,0 +1,8 @@
+level.name=3
+game.duration=120
+explosion.timeout=1
+explosion.duration=1
+explosion.range=3
+robot.speed=2
+robot.killed.points=10
+opponent.killed.points=100

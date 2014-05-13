@@ -1,8 +1,8 @@
-level.name=Extreme level
-game.duration=1000000
-explosion.timeout=5
-explosion.duration=2
+level.name=2
+game.duration=120
+explosion.timeout=1.5
+explosion.duration=1
 explosion.range=3
-robot.speed=3
-robot.killed.points=5
-opponent.killed.points=10
+robot.speed=1
+robot.killed.points=10
+opponent.killed.points=100

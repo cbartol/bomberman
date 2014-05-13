@@ -1,6 +1,5 @@
 package ist.meic.bomberman.engine;
 
-import ist.meic.bomberman.R;
 import android.content.Context;
 
 public class Player extends Entity {
@@ -9,8 +8,8 @@ public class Player extends Entity {
 	private int score = 0;
 	private boolean alive = true;
 
-	public Player(int id, Context c, int dyingPoints, int x, int y) {
-		super(c, R.drawable.bomberman, dyingPoints, x, y);
+	public Player(int id, Context c, double dyingPoints, int x, int y) {
+		super(c, getPlayerDrawable(c, id), dyingPoints, x, y);
 		this.id = id;
 	}
 
@@ -35,11 +34,15 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public int destroy() {
+	public double destroy() {
 		if (alive) {
 			alive = false;
 			return super.destroy();
 		}
 		return 0;
+	}
+	
+	private static int getPlayerDrawable(final Context c, final int playerId){
+		return c.getResources().getIdentifier("player" + playerId, "drawable", c.getPackageName());
 	}
 }

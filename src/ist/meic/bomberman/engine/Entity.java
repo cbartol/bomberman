@@ -3,9 +3,9 @@ package ist.meic.bomberman.engine;
 import android.content.Context;
 
 public abstract class Entity extends DrawableObject {
-	private int dyingPoints;
+	private double dyingPoints;
 	
-	public Entity(Context c, int imageResId, int dyingPoints, int x, int y) {
+	public Entity(Context c, int imageResId, double dyingPoints, int x, int y) {
 		super(c, imageResId, x, y);
 		this.dyingPoints = dyingPoints;
 	}
@@ -27,7 +27,7 @@ public abstract class Entity extends DrawableObject {
 		}
 	}
 	
-	public int destroy(){
+	public double destroy(){
 		setImage(0);
 		return dyingPoints;
 	}
