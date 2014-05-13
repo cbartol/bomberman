@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 public class FindServerActivity extends MultiplayerActivity implements DeviceActionListener{
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
