@@ -18,4 +18,10 @@ public class FindServerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_find_server);
 	}
+	
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    FindServerActivity.this.overridePendingTransition(0, 0);
+	}
 }
