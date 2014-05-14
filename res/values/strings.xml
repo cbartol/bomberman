@@ -29,5 +29,6 @@
     <string name="label_servers">Available Servers</string>
     <string name="empty_message">No servers available</string>
     <string name="search_server">Search Servers</string>
+    <string name="title_activity_multiplayer_game">MultiplayerGameActivity</string>
 
 </resources>

@@ -86,6 +86,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ist.meic.bomberman.MultiplayerActivity" />
         </activity>
+        <activity
+            android:name="ist.meic.bomberman.MultiplayerGameActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_multiplayer_game"
+            android:parentActivityName="ist.meic.bomberman.CreateServerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ist.meic.bomberman.CreateServerActivity" />
+        </activity>
     </application>
 
 </manifest>
