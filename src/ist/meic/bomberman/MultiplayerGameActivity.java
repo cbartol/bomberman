@@ -4,20 +4,12 @@ import ist.meic.bomberman.engine.Direction;
 import ist.meic.bomberman.engine.Game;
 import ist.meic.bomberman.engine.GameMapView;
 import ist.meic.bomberman.engine.MapProperties;
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-import android.os.Build;
 
-public class MultiplayerGameActivity extends Activity {
+public class MultiplayerGameActivity extends MultiplayerActivity {
 	
 	private Game game;
 	private MapProperties mapProperties;
@@ -42,6 +34,12 @@ public class MultiplayerGameActivity extends Activity {
 		text.setText(getString(R.string.number_players) + "\n1");
 
 		startGame();
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    MultiplayerGameActivity.this.overridePendingTransition(0, 0);
 	}
 	
 	@Override
