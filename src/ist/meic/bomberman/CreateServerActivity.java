@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ist.meic.bomberman.engine.MapProperties;
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
