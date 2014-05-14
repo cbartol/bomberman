@@ -4,9 +4,14 @@ import ist.meic.bomberman.R;
 import android.content.Context;
 
 public class Robot extends Entity {
-
-	public Robot(Context c, int dyingPoints, int x, int y) {
+	private int id;
+	
+	public Robot(Context c, int id, int dyingPoints, int x, int y) {
 		super(c, R.drawable.robot, dyingPoints, x, y);
+		this.id = id;
 	}
 
+	public int getId(){
+		return id;
+	}
 }

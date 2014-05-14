@@ -15,13 +15,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.util.SparseArray;
 /*
  * This class will be used for multiplayer on the server side.
  * For clients it's necessary to create a 'GameProxy' class that communicates with the server
@@ -53,13 +53,15 @@ import android.util.Log;
 	
 	private List<Wall> walls = Collections.synchronizedList(new LinkedList<Wall>());
 	private List<Bomb> bombs =  Collections.synchronizedList(new LinkedList<Bomb>());
-	private List<Robot> robots =  Collections.synchronizedList(new LinkedList<Robot>());
+	private Map<Integer,Robot> robots =  Collections.synchronizedMap(new HashMap<Integer,Robot>());
 	private List<Obstacle> obstacles =  Collections.synchronizedList(new LinkedList<Obstacle>());
-	private Map<Integer, List<ExplosionPart>> explosionParts =  Collections.synchronizedMap(new TreeMap<Integer, List<ExplosionPart>>());
+	private Map<Integer, List<ExplosionPart>> explosionParts =  Collections.synchronizedMap(new HashMap<Integer, List<ExplosionPart>>());
 	private Map<Integer,Player> playersAlive =  Collections.synchronizedMap(new HashMap<Integer,Player>());
 	private Map<Integer,Player> players =  Collections.synchronizedMap(new HashMap<Integer,Player>());
 	private Map<Integer,Player> pausedPlayers = Collections.synchronizedMap(new HashMap<Integer,Player>());
+	private SparseArray<Player> playersToEnterInGame = new SparseArray<Player>(); 
 	private int explosionIdGenerator = 0;
+	private int robotIdGenerator = 0;
 	
 	private Handler mHandler;
 	private Runnable moveRobots;
@@ -165,14 +167,20 @@ import android.util.Log;
 				if(object == WALL){
 					walls.add(new Wall(activity, j, i));
 				} else if(object == ROBOT){
-					robots.add(new Robot(activity, mapProperties.getRobotKilledPoints(), j, i));
+					final int robotId = robotIdGenerator++;
+					robots.put(robotId, new Robot(activity, robotId, mapProperties.getRobotKilledPoints(), j, i));
 				} else if(object == OBSTACLE){
 					obstacles.add(new Obstacle(activity, j, i));
 				} else if(object > PLAYER && object <= PLAYER + maxPlayers){
 					final int playerId = object - PLAYER;
 					final Player p = new Player(playerId, activity, mapProperties.getPlayerKilledPoints(), j, i);
-					playersAlive.put(playerId, p);
 					players.put(playerId, p);
+					if(object > PLAYER +1){ // only for player2, 3, etc...
+						this.map[i][j] = EMPTY; // the player is not ready to join the game
+						playersToEnterInGame.put(playerId, p);
+					} else {
+						playersAlive.put(playerId, p);
+					}
 				} else if(object > PLAYER + maxPlayers && object <= PLAYER + 9) {
 					this.map[i][j] = EMPTY; // we have to delete players on map that are not playing.
 				}
@@ -203,7 +211,7 @@ import android.util.Log;
 	public synchronized void moveRobots(){
 		List<Robot> robotsCopy = new LinkedList<Robot>();
 		synchronized(robots){
-			robotsCopy.addAll(robots);
+			robotsCopy.addAll(robots.values());
 		}
 		for (Robot robot : robotsCopy) {
 			move(robot, Direction.random(whereToMove(robot.getX(),robot.getY())), ROBOT);
@@ -401,7 +409,7 @@ import android.util.Log;
 		final char object = map[posY][posX];
 		if(object == ROBOT){
 			synchronized(robots){
-				Iterator<Robot> it = robots.iterator();
+				Iterator<Robot> it = robots.values().iterator();
 				while(it.hasNext()){
 					Robot robot = it.next();
 					if(robot.getX() == posX && robot.getY() == posY){
@@ -447,7 +455,7 @@ import android.util.Log;
 	// TODO: to optimize this function the game can store and update this list
 	public List<DrawableObject> getObjectsToDraw(){
 		List<DrawableObject> objects = new LinkedList<DrawableObject>();
-		objects.addAll(robots);
+		objects.addAll(robots.values());
 		objects.addAll(obstacles);
 		objects.addAll(playersAlive.values());
 		objects.addAll(bombs);
@@ -484,13 +492,20 @@ import android.util.Log;
 		pausedPlayers.put(playerId, p);
 	}
 	
-	public void resumePlayer(int playerId){
-		Player p = pausedPlayers.get(playerId);
+	public void resumePlayer(final int playerId){
+		final Player p = pausedPlayers.get(playerId);
+		checkIfPlayerCanPlay(p);
+		pausedPlayers.remove(playerId);
+		//activity.draw(isTheEndOfTheGame()); // it's not mandatory.
+	}
+	
+	// This is used when the game resumes the game or a client joins a game that already was started
+	private void checkIfPlayerCanPlay(final Player p){
 		final char object = map[p.getY()][p.getX()];
 		if(object == EMPTY && !robotNear(p.getX(), p.getY())){
-			map[p.getY()][p.getX()] = (char) (PLAYER + playerId);
+			map[p.getY()][p.getX()] = (char) (PLAYER + p.getId());
 		} else {
-			playersAlive.remove(playerId);
+			playersAlive.remove(p.getId());
 			p.destroy();
 			if(object == EXPLOSION){
 				Player player = getPlayerOwnerOfTheExplosion(p.getX(), p.getY());
@@ -500,7 +515,5 @@ import android.util.Log;
 			}
 
 		}
-		pausedPlayers.remove(playerId);
-		//activity.draw(isTheEndOfTheGame()); // it's not mandatory.
 	}
 }
