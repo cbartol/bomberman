@@ -34,8 +34,7 @@
             android:layout_toLeftOf="@+id/downButton"
             android:background="@drawable/game_button"
             android:onClick="moveLeft"
-            android:text="@string/arrow_left"
-            android:textSize="12sp" />
+            android:text="@string/arrow_left" />
 
         <Button
             android:id="@+id/rightButton"
@@ -47,8 +46,7 @@
             android:layout_toRightOf="@+id/downButton"
             android:background="@drawable/game_button"
             android:onClick="moveRight"
-            android:text="@string/arrow_right"
-            android:textSize="12sp" />
+            android:text="@string/arrow_right" />
 
         <Button
             android:id="@+id/upButton"
@@ -59,20 +57,7 @@
             android:layout_toLeftOf="@+id/rightButton"
             android:background="@drawable/game_button"
             android:onClick="moveUp"
-            android:text="@string/arrow_up"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/downButton"
-            style="@style/ArrowGameButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/game_button"
-            android:onClick="moveDown"
-            android:text="@string/arrow_down"
-            android:textSize="12sp" />
+            android:text="@string/arrow_up" />
 
         <Button
             android:id="@+id/bombButton"
@@ -84,8 +69,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/game_button"
             android:onClick="placeBomb"
-            android:text="@string/bomb_button"
-            android:textSize="12sp" />
+            android:text="@string/bomb_button" />
 
         <Button
             android:id="@+id/quitButton"
@@ -98,8 +82,7 @@
             android:layout_marginLeft="17dp"
             android:background="@drawable/game_button"
             android:onClick="onQuit"
-            android:text="@string/quit_button"
-            android:textSize="12sp" />
+            android:text="@string/quit_button" />
 
         <Button
             android:id="@+id/pauseButton"
@@ -111,8 +94,19 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/game_button"
             android:onClick="onPause"
-            android:text="@string/pause_button"
-            android:textSize="12sp" />
+            android:text="@string/pause_button" />
+
+        <Button
+            android:id="@+id/downButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/quitButton"
+            android:layout_alignBottom="@+id/quitButton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/game_button"
+            android:onClick="moveDown"
+            android:text="@string/arrow_down" />
     </RelativeLayout>
 
     <LinearLayout

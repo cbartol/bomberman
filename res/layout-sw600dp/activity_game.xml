@@ -1,0 +1,146 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_dark"
+    tools:context="ist.meic.bomberman.GameActivity" >
+
+    <ist.meic.bomberman.engine.GameMapView
+        android:id="@+id/gameAreaSinglePlayer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/buttonArea"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/infoArea"
+        android:background="@android:color/holo_blue_dark"
+        android:columnCount="1" >
+    </ist.meic.bomberman.engine.GameMapView>
+
+    <RelativeLayout
+        android:id="@+id/buttonArea"
+        android:layout_width="fill_parent"
+        android:layout_height="350dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+
+        <Button
+            android:id="@+id/leftButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/downButton"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/downButton"
+            android:background="@drawable/game_button"
+            android:onClick="moveLeft"
+            android:text="@string/arrow_left" />
+
+        <Button
+            android:id="@+id/rightButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/downButton"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/downButton"
+            android:background="@drawable/game_button"
+            android:onClick="moveRight"
+            android:text="@string/arrow_right" />
+
+        <Button
+            android:id="@+id/upButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rightButton"
+            android:layout_toLeftOf="@+id/rightButton"
+            android:background="@drawable/game_button"
+            android:onClick="moveUp"
+            android:text="@string/arrow_up" />
+
+        <Button
+            android:id="@+id/bombButton"
+            style="@style/ActionGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/downButton"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/game_button"
+            android:onClick="placeBomb"
+            android:text="@string/bomb_button" />
+
+        <Button
+            android:id="@+id/quitButton"
+            style="@style/ActionGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="17dp"
+            android:background="@drawable/game_button"
+            android:onClick="onQuit"
+            android:text="@string/quit_button" />
+
+        <Button
+            android:id="@+id/pauseButton"
+            style="@style/ActionGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/quitButton"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/game_button"
+            android:onClick="onPause"
+            android:text="@string/pause_button" />
+
+        <Button
+            android:id="@+id/downButton"
+            style="@style/ArrowGameButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/quitButton"
+            android:layout_alignBottom="@+id/quitButton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/game_button"
+            android:onClick="moveDown"
+            android:text="@string/arrow_down" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/infoArea"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/playerName"
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/player_name" />
+
+        <TextView
+            android:id="@+id/playerScore"
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/player_score" />
+
+        <TextView
+            android:id="@+id/timeLeft"
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/time_left" />
+
+        <TextView
+            android:id="@+id/numberPlayers"
+            style="@style/InformationText"
+            android:layout_height="match_parent"
+            android:text="@string/number_players" />
+    </LinearLayout>
+
+</RelativeLayout>

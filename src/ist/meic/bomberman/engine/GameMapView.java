@@ -3,8 +3,8 @@ package ist.meic.bomberman.engine;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -36,11 +36,13 @@ public class GameMapView extends SurfaceView implements SurfaceHolder.Callback{
 			final double viewHeight = getHeight();
 			mapWidth = originalMapWidth;
 			mapHeight = originalMapHeight;
-			if(Math.abs(viewWidth-mapWidth) < Math.abs(viewHeight-mapHeight)){
+			Log.i("view", "width: " + viewWidth + " height: " + viewHeight);
+			Log.i("image", "width: " + mapWidth + " height: " + mapHeight);
+			if(viewWidth/viewHeight < mapWidth/mapHeight){
 				//the width of the map is equal to the width of the game area
 				mapHeight = mapHeight * viewWidth / mapWidth;
 				mapWidth = viewWidth;
-				topOffset = Math.abs(viewHeight-mapHeight) / 2;
+				topOffset = 0; // Math.abs(viewHeight-mapHeight) / 2;
 			} else {
 				//the height of the map is equal to the height of the game area
 				mapWidth = mapWidth * viewHeight / mapHeight;

@@ -78,7 +78,7 @@ public class GameActivity extends Activity {
 				} // end finally
 			}
 		};
-		game = new Game(this, gameArea, mapProperties, playerId);
+		game = new Game(this, gameArea, mapProperties, playerId, Game.SERVER);
 		startGame();
 	}
 
@@ -87,17 +87,41 @@ public class GameActivity extends Activity {
 		game.endGame();
 		super.onDestroy();
 	}
+	
+	@Override
+	public void onBackPressed() {
+		onPause(null);
+	}
 
 	public void startGame() {
 		game.start();
 	}
 
 	public void onQuit(View v) {
-		onBackPressed();
+		finish();
 	}
 
 	public void onPause(View v) {
-		// add code for pause functionality
+		game.pausePlayer(playerId);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		// set title
+//		alertDialogBuilder.setTitle(R.string.pause_message);
+
+		// set dialog message
+		alertDialogBuilder
+				.setMessage(R.string.pause_message)
+				.setCancelable(false)
+				.setNeutralButton(R.string.resume,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								game.resumePlayer(playerId);
+							}
+						});
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
 	}
 
 	public void placeBomb(View v) {
@@ -155,7 +179,7 @@ public class GameActivity extends Activity {
 				.setNeutralButton("Ok",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								onBackPressed();
+								finish();
 							}
 						});
 		// create alert dialog

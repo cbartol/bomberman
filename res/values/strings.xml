@@ -26,5 +26,7 @@
     <string name="number_players">Number Players:</string>
     <string name="you_won">Winner</string>
     <string name="you_lost">Game Over</string>
+    <string name="pause_message">Game paused</string>
+    <string name="resume">Resume</string>
 
 </resources>

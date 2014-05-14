@@ -10,12 +10,14 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
@@ -24,7 +26,10 @@ import android.util.Log;
  * This class will be used for multiplayer on the server side.
  * For clients it's necessary to create a 'GameProxy' class that communicates with the server
  */
-public class Game extends Thread{
+@SuppressLint("UseSparseArrays") public class Game extends Thread{
+	public static final int CLIENT = 1;
+	public static final int SERVER = 0;
+	
 	// '0' + playerId --> player char on map
 	private static final char PLAYER = '0';
 	private static final char ROBOT = 'R';
@@ -34,6 +39,7 @@ public class Game extends Thread{
 	private static final char EMPTY = '-';
 	
 	private int maxPlayers = 1;
+	private int gameMode = SERVER;
 	
 	private MapProperties mapProperties;
 	private char[][] map;
@@ -50,8 +56,9 @@ public class Game extends Thread{
 	private List<Robot> robots =  Collections.synchronizedList(new LinkedList<Robot>());
 	private List<Obstacle> obstacles =  Collections.synchronizedList(new LinkedList<Obstacle>());
 	private Map<Integer, List<ExplosionPart>> explosionParts =  Collections.synchronizedMap(new TreeMap<Integer, List<ExplosionPart>>());
-	private Map<Integer,Player> playersAlive =  Collections.synchronizedMap(new TreeMap<Integer,Player>());
-	private Map<Integer,Player> players =  Collections.synchronizedMap(new TreeMap<Integer,Player>());
+	private Map<Integer,Player> playersAlive =  Collections.synchronizedMap(new HashMap<Integer,Player>());
+	private Map<Integer,Player> players =  Collections.synchronizedMap(new HashMap<Integer,Player>());
+	private Map<Integer,Player> pausedPlayers = Collections.synchronizedMap(new HashMap<Integer,Player>());
 	private int explosionIdGenerator = 0;
 	
 	private Handler mHandler;
@@ -62,7 +69,8 @@ public class Game extends Thread{
 	/******************************************************
 	 ******************** Init section *********************
 	 ******************************************************/
-	public Game(final GameActivity a, GameMapView gameArea, MapProperties mapProp, int maxPlayers){
+	public Game(final GameActivity a, GameMapView gameArea, MapProperties mapProp, int maxPlayers, int gameMode){
+		this.gameMode = gameMode;
 		this.activity = a;
 		this.mapProperties = mapProp;
 		this.maxPlayers = maxPlayers;
@@ -102,7 +110,9 @@ public class Game extends Thread{
 	@Override
 	public void run() {
 		mHandler.postDelayed(timePassing, 1000);
-		mHandler.postDelayed(moveRobots,  (long) (1000/mapProperties.getRobotSpeed()));
+		if(gameMode == SERVER){
+			mHandler.postDelayed(moveRobots,  (long) (1000/mapProperties.getRobotSpeed()));
+		}
 		isRunning = true;
 		synchronized (this) {
 			while(isRunning){
@@ -460,11 +470,37 @@ public class Game extends Thread{
 		return height;
 	}
 	
-	public boolean isTheEndOfTheGame(){
+	private boolean isTheEndOfTheGame(){
 		return timeLeft <= 0 || (robots.size() == 0 && playersAlive.size() <= 1) || playersAlive.size() == 0;
 	}
 	
 	public boolean isPlayerWinner(int id){
 		return playersAlive.get(id) != null;
+	}
+	
+	public void pausePlayer(int playerId){
+		Player p = playersAlive.get(playerId);
+		map[p.getY()][p.getX()] = EMPTY;
+		pausedPlayers.put(playerId, p);
+	}
+	
+	public void resumePlayer(int playerId){
+		Player p = pausedPlayers.get(playerId);
+		final char object = map[p.getY()][p.getX()];
+		if(object == EMPTY && !robotNear(p.getX(), p.getY())){
+			map[p.getY()][p.getX()] = (char) (PLAYER + playerId);
+		} else {
+			playersAlive.remove(playerId);
+			p.destroy();
+			if(object == EXPLOSION){
+				Player player = getPlayerOwnerOfTheExplosion(p.getX(), p.getY());
+				player.addScore(p);
+			} else if(object > PLAYER && object <= PLAYER + maxPlayers){ // when there is a player on the same position 
+				players.get(object - PLAYER).addScore(p);
+			}
+
+		}
+		pausedPlayers.remove(playerId);
+		//activity.draw(isTheEndOfTheGame()); // it's not mandatory.
 	}
 }
