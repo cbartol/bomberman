@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 public class ServerListFragment extends ListFragment implements
 PeerListListener {
@@ -45,6 +46,12 @@ PeerListListener {
 		}
 
 	}
+	
+	@Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        WifiP2pDevice device = (WifiP2pDevice) getListAdapter().getItem(position);
+        ((DeviceActionListener) getActivity()).tryConnect(device);
+    }
 	
 	public void clearPeers() {
         peers.clear();
