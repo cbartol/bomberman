@@ -49,7 +49,7 @@ public class MultiplayerGameActivity extends MultiplayerActivity {
 	}
 	
 	public void startGame(){
-		game = new Game(this, (GameMapView) findViewById(R.id.gameAreaSinglePlayer), mapProperties, 2);
+		//game = new Game(this, (GameMapView) findViewById(R.id.gameAreaSinglePlayer), mapProperties, 2, Game.SERVER);
 	}
 	
 	public void onQuit(View v) {
