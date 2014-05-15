@@ -3,6 +3,8 @@ package ist.meic.bomberman;
 import ist.meic.bomberman.engine.Direction;
 import ist.meic.bomberman.engine.Game;
 import ist.meic.bomberman.engine.GameMapView;
+import ist.meic.bomberman.engine.ServerGame;
+import ist.meic.bomberman.wifi.MainThreadServer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +15,8 @@ public class MultiplayerServerGameActivity extends GameActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		isSinglePlayer = false;
 		super.onCreate(savedInstanceState);
+		game = new ServerGame(this, gameArea, mapProperties, /*mapProperties.getMaxPlayers()*/ 2);
 		// TODO: create the server thread and wait for clients requests to join the game
-		game = new Game(this, gameArea, mapProperties, /*mapProperties.getMaxPlayers()*/ 2);
 		startGame();
 	}
 	
@@ -32,7 +34,7 @@ public class MultiplayerServerGameActivity extends GameActivity {
 	
 	@Override
 	public void startGame(){
-		game = new Game(this, (GameMapView) findViewById(R.id.gameArea), mapProperties, 2);
+		game.start();
 	}
 	
 	@Override
