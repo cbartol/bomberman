@@ -1,5 +1,7 @@
 package ist.meic.bomberman.engine;
 
+import java.util.List;
+
 public interface IGame {
 
 	public void start();
@@ -17,5 +19,9 @@ public interface IGame {
 	public boolean isPlayerWinner(int playerId);
 	
 	public int getPlayerScore(int playerId);
+	
+	public List<DrawableObject> getObjectsToDraw();
+
+	public List<DrawableObject> getFixedObjects(); 
 	
 }

@@ -10,7 +10,7 @@ import android.view.SurfaceView;
 
 public class GameMapView extends SurfaceView implements SurfaceHolder.Callback{
 	
-	private Game game;
+	private IGame game;
 	private Bitmap map;
 	private boolean firstTimeDraw = true;
 	private int originalMapWidth;
@@ -20,7 +20,7 @@ public class GameMapView extends SurfaceView implements SurfaceHolder.Callback{
 	private double topOffset = 0;
 	private double leftOffset = 0;
 
-	public void setGame(Game game, int mapWidth, int mapHeight){
+	public void setGame(IGame game, int mapWidth, int mapHeight){
 		this.game = game;
 		this.originalMapWidth = mapWidth;
 		this.originalMapHeight = mapHeight;

@@ -8,14 +8,22 @@ public class MultiplayerClientGameActivity extends GameActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		isSinglePlayer = false;
+		this.isSinglePlayer = false;
 		//read from intent the server and port
 		super.onCreate(savedInstanceState);
+		String server = "localhost";
+		int port = 20000;
+		
 		try {
-			game = new ClientGame();
+			this.game = new ClientGame(this, gameArea, server, port);
+			game.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			finish();
 		}
+	}
+
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
 	}
 }

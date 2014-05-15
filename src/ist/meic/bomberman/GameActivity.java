@@ -21,8 +21,8 @@ public class GameActivity extends Activity {
 	protected GameMapView gameArea;
 	protected MapProperties mapProperties;
 	protected boolean isSinglePlayer = true;
+	protected int playerId = 1;
 	
-	private int playerId = 1;
 	private SurfaceHolder surfaceHolder;
 	private Runnable drawCallback;
 	private Handler mHandler;

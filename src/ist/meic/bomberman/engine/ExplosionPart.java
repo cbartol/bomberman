@@ -36,4 +36,8 @@ public class ExplosionPart extends DrawableObject {
 	public int getPlayerOwner(){
 		return playerOwner;
 	}
+
+	public int getExplosionId() {
+		return 0;
+	}
 }
