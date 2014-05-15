@@ -38,7 +38,7 @@ public class ClientReceiveActionsThread extends Thread {
 				case REMOVE_EXPLOSION:
 					int explosionId = in.readInt();
 					endOfTheGame = in.readBoolean();
-					game.removeExplosions(explosionId, endOfTheGame);;
+					game.removeExplosions(explosionId, endOfTheGame);
 					break;
 				case PUT_EXPLOSION:
 					explosionId = in.readInt();

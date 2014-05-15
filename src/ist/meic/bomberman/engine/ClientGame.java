@@ -1,6 +1,5 @@
 package ist.meic.bomberman.engine;
 
-import ist.meic.bomberman.GameActivity;
 import ist.meic.bomberman.MultiplayerClientGameActivity;
 import ist.meic.bomberman.multiplayer.GameState;
 import ist.meic.bomberman.wifi.ClientReceiveActionsThread;
@@ -8,20 +7,17 @@ import ist.meic.bomberman.wifi.PlayerAction;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ClientGame implements IGame {
+public class ClientGame extends Thread implements IGame {
 	private ClientReceiveActionsThread receiveThread;
 	private Socket sendSocket;
-	private GameActivity activity;
 	
 	private List<Wall> walls;
 	private Map<Integer, Obstacle> obstacles; 
@@ -36,50 +32,61 @@ public class ClientGame implements IGame {
 	private DataOutputStream out;
 	private DataInputStream in;
 	
-	public ClientGame(MultiplayerClientGameActivity activity, GameMapView gameArea, String server, int port) throws UnknownHostException, IOException, ClassNotFoundException{
+	private MultiplayerClientGameActivity activity;
+	private GameMapView gameArea;
+	private String server;
+	private int port;
+	
+	public ClientGame(MultiplayerClientGameActivity activity, GameMapView gameArea, String server, int port){
 		this.activity = activity;
-		sendSocket = new Socket(server,port);
-		DataOutputStream outToServer = new DataOutputStream(sendSocket.getOutputStream());
-		outToServer.writeBoolean(false);
-		out = outToServer;
-		in = new DataInputStream(sendSocket.getInputStream());
-
-		ObjectInputStream fetchState = new ObjectInputStream(sendSocket.getInputStream());
-		GameState state = (GameState) fetchState.readObject();
-		walls = state.getWalls();
-		obstacles = Collections.synchronizedMap(new TreeMap<Integer, Obstacle>());
-		for (Obstacle obstacle : state.getObstacles()) {
-			obstacles.put(obstacle.getId(), obstacle);
-		}
-		players = state.getPlayers();
-		playersAlive = state.getPlayersAlive();
-		robots = state.getRobots();
-		
-		bombs = Collections.synchronizedMap(new TreeMap<Integer, Bomb>());
-		for (Bomb bomb : state.getBombs()) {
-			bombs.put(bomb.getExplosionId(), bomb);
-		}
-		explosionParts = state.getExplosionParts();
-		
-		width = state.getMapWidth();
-		height = state.getMapHeight();
-		
-		activity.setPlayerId(state.getPlayerId());
-		int stripeSize = walls.get(0).getImage().getWidth();
-		gameArea.setGame(this, width*stripeSize, height*stripeSize);
-		//TODO: read from the server all the state of the game (I need this before start the thread)
-		
-			
-		Socket receiveSocket = new Socket(server,port);
-		outToServer = new DataOutputStream(receiveSocket.getOutputStream());
-		outToServer.writeBoolean(true);
-		receiveThread = new ClientReceiveActionsThread(this, receiveSocket);
-			
+		this.gameArea = gameArea;
+		this.server = server;
+		this. port = port;
 	}
 	
 	@Override
-	public void start() {
-		// it does not need to be a thread
+	public void run() {
+		try {
+			
+			sendSocket = new Socket(server,port);
+			DataOutputStream outToServer = new DataOutputStream(sendSocket.getOutputStream());
+			outToServer.writeBoolean(false);
+			out = outToServer;
+			in = new DataInputStream(sendSocket.getInputStream());
+	
+			ObjectInputStream fetchState = new ObjectInputStream(sendSocket.getInputStream());
+			GameState state = (GameState) fetchState.readObject();
+			walls = state.getWalls();
+			obstacles = Collections.synchronizedMap(new TreeMap<Integer, Obstacle>());
+			for (Obstacle obstacle : state.getObstacles()) {
+				obstacles.put(obstacle.getId(), obstacle);
+			}
+			players = state.getPlayers();
+			playersAlive = state.getPlayersAlive();
+			robots = state.getRobots();
+			
+			bombs = Collections.synchronizedMap(new TreeMap<Integer, Bomb>());
+			for (Bomb bomb : state.getBombs()) {
+				bombs.put(bomb.getExplosionId(), bomb);
+			}
+			explosionParts = state.getExplosionParts();
+			
+			width = state.getMapWidth();
+			height = state.getMapHeight();
+			
+			activity.setPlayerId(state.getPlayerId());
+			int stripeSize = walls.get(0).getImage().getWidth();
+			gameArea.setGame(this, width*stripeSize, height*stripeSize);
+			activity.releaseTheUI();
+			
+				
+			Socket receiveSocket = new Socket(server,port);
+			outToServer = new DataOutputStream(receiveSocket.getOutputStream());
+			outToServer.writeBoolean(true);
+			receiveThread = new ClientReceiveActionsThread(this, receiveSocket);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
