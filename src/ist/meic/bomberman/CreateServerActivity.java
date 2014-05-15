@@ -2,13 +2,24 @@ package ist.meic.bomberman;
 
 import ist.meic.bomberman.engine.MapProperties;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.IInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,7 +39,9 @@ public class CreateServerActivity extends Activity {
 		Resources res = getResources();
 		levels = res.getInteger(R.integer.max_levels);
 		addItemsOnLevelSpinner();
-		
+		TextView myIp = (TextView) findViewById(R.id.my_ip);
+		final Inet4Address inet4Address = getWifiInetAddress(this, Inet4Address.class);
+		myIp.setText(inet4Address.toString());
 		//TODO: show some where the IP and the PORT of the server
 	}
 
@@ -82,4 +95,75 @@ public class CreateServerActivity extends Activity {
 		preview.setImageDrawable(getResources().getDrawable(mapId));
 	}
 
+	/*protected String wifiIpAddress(Context context) {
+	    WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+	    int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+
+	    // Convert little-endian to big-endianif needed
+	    if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
+	        ipAddress = Integer.reverseBytes(ipAddress);
+	    }
+
+	    byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
+
+	    String ipAddressString;
+	    try {
+	        ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
+	    } catch (UnknownHostException ex) {
+	        Log.e("WIFIIP", "Unable to get host address.");
+	        ipAddressString = null;
+	    }
+
+	    return ipAddressString;
+	}
+	public String getLocalIpAddress() {
+	    try {
+	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+	            NetworkInterface intf = en.nextElement();
+	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+	                InetAddress inetAddress = enumIpAddr.nextElement();
+	                if (!inetAddress.isLoopbackAddress()) {
+	                    return inetAddress.getHostAddress().toString();
+	                }
+	            }
+	        }
+	    } catch (SocketException ex) {
+	        Log.e("WiFi ip", ex.toString());
+	    }
+	    return null;
+	}*/
+	public static Enumeration<InetAddress> getWifiInetAddresses(final Context context) {
+	    final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+	    final WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+	    final String macAddress = wifiInfo.getMacAddress();
+	    final String[] macParts = macAddress.split(":");
+	    final byte[] macBytes = new byte[macParts.length];
+	    for (int i = 0; i< macParts.length; i++) {
+	        macBytes[i] = (byte)Integer.parseInt(macParts[i], 16);
+	    }
+	    try {
+	        final Enumeration<NetworkInterface> e =  NetworkInterface.getNetworkInterfaces();
+	        while (e.hasMoreElements()) {
+	            final NetworkInterface networkInterface = e.nextElement();
+	            if (Arrays.equals(networkInterface.getHardwareAddress(), macBytes)) {
+	                return networkInterface.getInetAddresses();
+	            }
+	        }
+	    } catch (SocketException e) {
+	        Log.wtf("WIFIIP", "Unable to NetworkInterface.getNetworkInterfaces()");
+	    }
+	    return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static<T extends InetAddress> T getWifiInetAddress(final Context context, final Class<T> inetClass) {
+	    final Enumeration<InetAddress> e = getWifiInetAddresses(context);
+	    while (e.hasMoreElements()) {
+	        final InetAddress inetAddress = e.nextElement();
+	        if (inetAddress.getClass() == inetClass) {
+	            return (T)inetAddress;
+	        }
+	    }
+	    return null;
+	}
 }

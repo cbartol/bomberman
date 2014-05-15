@@ -1,7 +1,11 @@
 package ist.meic.bomberman.wifi;
 
+import ist.meic.bomberman.engine.Direction;
 import ist.meic.bomberman.engine.ServerGame;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 public class ServerReceiver extends Thread {
