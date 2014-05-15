@@ -18,7 +18,6 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.util.SparseArray;
@@ -26,7 +25,7 @@ import android.util.SparseArray;
  * This class will be used for multiplayer on the server side.
  * For clients it's necessary to create a 'GameProxy' class that communicates with the server
  */
-@SuppressLint("UseSparseArrays") public class Game extends Thread{
+@SuppressLint("UseSparseArrays") public class Game extends Thread implements IGame{
 	
 	// '0' + playerId --> player char on map
 	private static final char PLAYER = '0';
@@ -63,8 +62,7 @@ import android.util.SparseArray;
 	private Handler mHandler;
 	private Runnable moveRobots;
 	private Runnable timePassing;
-
-
+	
 	/******************************************************
 	 ******************** Init section *********************
 	 ******************************************************/
@@ -304,7 +302,7 @@ import android.util.SparseArray;
 	 ******************** Bombs section *******************
 	 ******************************************************/
 	
-	public synchronized void dropBomb(Context c, int playerId){
+	public synchronized void dropBomb(int playerId){
 		final Player player = players.get(playerId);
 		if(player.isDead() || timeLeft <= 0 || !player.canDropBomb()){
 			return;
@@ -313,7 +311,7 @@ import android.util.SparseArray;
 		final int x = player.getX();
 		final int y = player.getY();
 		final int explosionId = ++explosionIdGenerator;
-		final Bomb bomb = new Bomb(c, playerId, explosionId, x, y);
+		final Bomb bomb = new Bomb(activity, playerId, explosionId, x, y);
 		bombs.add(bomb);
 		final Runnable explosionTimer = new Runnable() {
 			@Override
@@ -511,5 +509,9 @@ import android.util.SparseArray;
 			}
 
 		}
+	}
+	
+	public int getPlayerScore(int playerId){
+		return players.get(playerId).getScore();
 	}
 }

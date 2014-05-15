@@ -3,6 +3,7 @@ package ist.meic.bomberman;
 import ist.meic.bomberman.engine.Direction;
 import ist.meic.bomberman.engine.Game;
 import ist.meic.bomberman.engine.GameMapView;
+import ist.meic.bomberman.engine.IGame;
 import ist.meic.bomberman.engine.MapProperties;
 import ist.meic.bomberman.engine.Player;
 import android.app.Activity;
@@ -16,7 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
-	protected Game game;
+	protected IGame game;
 	protected GameMapView gameArea;
 	protected MapProperties mapProperties;
 	protected boolean isSinglePlayer = true;
@@ -129,23 +130,23 @@ public class GameActivity extends Activity {
 	}
 
 	public void placeBomb(View v) {
-		game.dropBomb(this, 1);
+		game.dropBomb(playerId);
 	}
 
 	public void moveUp(View v) {
-		game.movePlayer(1, Direction.UP);
+		game.movePlayer(playerId, Direction.UP);
 	}
 
 	public void moveDown(View v) {
-		game.movePlayer(1, Direction.DOWN);
+		game.movePlayer(playerId, Direction.DOWN);
 	}
 
 	public void moveLeft(View v) {
-		game.movePlayer(1, Direction.LEFT);
+		game.movePlayer(playerId, Direction.LEFT);
 	}
 
 	public void moveRight(View v) {
-		game.movePlayer(1, Direction.RIGHT);
+		game.movePlayer(playerId, Direction.RIGHT);
 	}
 
 	public void changeScore(Player player) {
@@ -178,7 +179,7 @@ public class GameActivity extends Activity {
 
 		// set dialog message
 		alertDialogBuilder
-				.setMessage("Final score: " + game.getPlayer(playerId).getScore())
+				.setMessage("Final score: " + game.getPlayerScore(playerId))
 				.setCancelable(false)
 				.setNeutralButton("Ok",
 						new DialogInterface.OnClickListener() {
