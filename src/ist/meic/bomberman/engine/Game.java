@@ -3,6 +3,7 @@ package ist.meic.bomberman.engine;
 import ist.meic.bomberman.GameActivity;
 import ist.meic.bomberman.R;
 import ist.meic.bomberman.R.raw;
+import ist.meic.bomberman.multiplayer.GameState;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -514,5 +515,23 @@ import android.util.SparseArray;
 	
 	public int getPlayerScore(int playerId){
 		return players.get(playerId).getScore();
+	}
+
+	public GameState getGameState(){
+		GameState result = new GameState();
+		result.setPlayersAlive(playersAlive);
+		result.setPlayers(players);
+		result.setPausedPlayers(pausedPlayers);
+		result.setPlayersToEnterInGame(playersToEnterInGame);
+		result.setLevel(mapProperties.getLevel());
+		result.setMapWidth(width);
+		result.setMapHeight(height);
+		//result.setPlayerId();
+		result.setWalls(walls);
+		result.setBombs(bombs);
+		result.setRobots(robots);
+		result.setObstacles(obstacles);
+		result.setExplosionParts(explosionParts);
+		return result;
 	}
 }

@@ -4,6 +4,7 @@ import ist.meic.bomberman.engine.ServerGame;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -32,14 +33,17 @@ public class MainThreadServer extends Thread {
 				Socket clientSocket = mainSocket.accept();
 
 				DataInputStream input = new DataInputStream(clientSocket.getInputStream());
-				boolean isRead = input.readBoolean();
+				boolean isClientRead = input.readBoolean();
 
 				// Wants to join
-				if(!isRead) {
+				if(isClientRead) {
 					game.addClient(clientSocket);					
 				} else {
 					ServerReceiver thread = new ServerReceiver(clientSocket, game);
 					threads.add(thread);
+					thread.start();
+					ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+					os.writeObject(game.getGameState());
 				}
 			}
 
