@@ -16,4 +16,14 @@ public class MultiplayerActivity extends Activity {
 	    super.onBackPressed();
 	    MultiplayerActivity.this.overridePendingTransition(0, 0);
 	}
+	public void createserver(View view) {
+		Intent intent = new Intent(MultiplayerActivity.this, CreateServerActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(intent);
+	}
+	public void joinserver(View view) {
+		Intent intent = new Intent(MultiplayerActivity.this, FindServerActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(intent);
+	}
 }

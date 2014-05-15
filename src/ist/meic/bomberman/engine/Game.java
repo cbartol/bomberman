@@ -28,12 +28,13 @@ import android.util.SparseArray;
 @SuppressLint("UseSparseArrays") public class Game extends Thread implements IGame{
 	
 	// '0' + playerId --> player char on map
-	private static final char PLAYER = '0';
-	private static final char ROBOT = 'R';
-	private static final char EXPLOSION = '#';
-	private static final char WALL = 'W';
-	private static final char OBSTACLE = 'O';
-	private static final char EMPTY = '-';
+	public static final char PLAYER = '0';
+	public static final char ROBOT = 'R';
+	public static final char EXPLOSION = '#';
+	public static final char WALL = 'W';
+	public static final char OBSTACLE = 'O';
+	public static final char EMPTY = '-';
+	public static final char BOMB = 'B';
 	
 	private int maxPlayers = 1;
 	
@@ -157,15 +158,15 @@ import android.util.SparseArray;
 				char object = rawMap.get(i).charAt(j);
 				this.map[i][j] = object;
 				if(object == WALL){
-					walls.add(new Wall(activity, j, i));
+					walls.add(new Wall(activity, j, i, Game.WALL));
 				} else if(object == ROBOT){
 					final int robotId = robotIdGenerator++;
-					robots.put(robotId, new Robot(activity, robotId, mapProperties.getRobotKilledPoints(), j, i));
+					robots.put(robotId, new Robot(activity, robotId, mapProperties.getRobotKilledPoints(), j, i, Game.ROBOT));
 				} else if(object == OBSTACLE){
-					obstacles.add(new Obstacle(activity, j, i));
+					obstacles.add(new Obstacle(activity, j, i, Game.OBSTACLE));
 				} else if(object > PLAYER && object <= PLAYER + maxPlayers){
 					final int playerId = object - PLAYER;
-					final Player p = new Player(playerId, activity, mapProperties.getPlayerKilledPoints(), j, i);
+					final Player p = new Player(playerId, activity, mapProperties.getPlayerKilledPoints(), j, i, Game.PLAYER);
 					players.put(playerId, p);
 					if(object > PLAYER +1){ // only for player2, 3, etc...
 						this.map[i][j] = EMPTY; // the player is not ready to join the game
@@ -311,7 +312,7 @@ import android.util.SparseArray;
 		final int x = player.getX();
 		final int y = player.getY();
 		final int explosionId = ++explosionIdGenerator;
-		final Bomb bomb = new Bomb(activity, playerId, explosionId, x, y);
+		final Bomb bomb = new Bomb(activity, playerId, explosionId, x, y, Game.BOMB);
 		bombs.add(bomb);
 		final Runnable explosionTimer = new Runnable() {
 			@Override
@@ -374,12 +375,12 @@ import android.util.SparseArray;
 		for(x = incrX, y = incrY; x != range && y != range ; x+= incrX, y+=incrY){
 			final char pos = map[startY+y][startX+x];
 			if(pos == OBSTACLE || (pos != WALL && map[startY+y+incrY][startX+x+incrX] == WALL)){
-				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y));
+				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y, Game.EXPLOSION));
 				explosionOwner.addScore(destroy(startX+x, startY+y));
 				map[startY+y][startX+x] = EXPLOSION;
 				break;
 			} else if(pos != WALL){
-				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, false, startX+x, startY+y));
+				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, false, startX+x, startY+y, Game.EXPLOSION));
 				explosionOwner.addScore(destroy(startX+x, startY+y));
 				map[startY+y][startX+x] = EXPLOSION;
 			} else {
@@ -388,7 +389,7 @@ import android.util.SparseArray;
 		}
 		if(x == range || y == range){
 			if(map[startY+y][startX+x] != WALL){
-				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y));
+				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y, Game.EXPLOSION));
 				explosionOwner.addScore(destroy(startX+x, startY+y));
 				map[startY+y][startX+x] = EXPLOSION;
 			}

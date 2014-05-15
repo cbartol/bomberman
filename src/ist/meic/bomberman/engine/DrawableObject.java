@@ -6,13 +6,14 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 
 public abstract class DrawableObject {
+	private char type;
 	private int x;
 	private int y;
 	private static final int MATRIX_TO_PIXEL = 40; 
 	private Bitmap image;
 	private Context context;
 	
-	public DrawableObject(Context c, int imageResId, int x, int y){
+	public DrawableObject(Context c, int imageResId, int x, int y, char type){
 		this.context = c;
 		this.x = x;
 		this.y = y;
@@ -54,5 +55,8 @@ public abstract class DrawableObject {
 	
 	public int destroy(){
 		return 0;
+	}
+	public char getType() {
+		return type;
 	}
 }
