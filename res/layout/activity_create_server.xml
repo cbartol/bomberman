@@ -49,4 +49,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/start" />
 
+    <TextView
+        android:id="@+id/my_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mapView"
+        android:layout_alignRight="@+id/start"
+        android:layout_marginLeft="26dp"
+        android:layout_toRightOf="@+id/levelTitle"
+        android:text="" />
+
 </RelativeLayout>
