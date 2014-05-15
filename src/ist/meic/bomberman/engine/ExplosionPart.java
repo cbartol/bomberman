@@ -5,10 +5,12 @@ import android.content.Context;
 
 public class ExplosionPart extends DrawableObject {
 	private int playerOwner;
+	private int explosionId;
 	
-	public ExplosionPart(Context c, int playerOwner, Direction direction, boolean end, int x, int y, char type) {
+	public ExplosionPart(Context c, int playerOwner, Direction direction, boolean end, int x, int y, char type, int explosionId) {
 		super(c, calculateImageId(direction, end), x, y, type);
 		this.playerOwner = playerOwner;
+		this.explosionId = explosionId;
 	}
 
 	private static int calculateImageId(Direction direction, boolean end){
@@ -36,8 +38,8 @@ public class ExplosionPart extends DrawableObject {
 	public int getPlayerOwner(){
 		return playerOwner;
 	}
-
-	public int getExplosionId() {
-		return 0;
+	
+	public int getExplosionId(){
+		return explosionId;
 	}
 }

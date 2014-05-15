@@ -331,7 +331,7 @@ import android.util.SparseArray;
 					explosionParts.get(bomb.getExplosionId()).clear();
 					explosionParts.remove(bomb.getExplosionId());
 				}
-				destroyObject(BOMB, /*bomb.getId()*/ 0);
+				destroyObject(BOMB, bomb.getExplosionId());
 				destroyExplosion(bomb.getExplosionId());
 				bombs.remove(bomb);
 				players.get(bomb.getPlayerId()).canDropBomb(true);
@@ -362,6 +362,7 @@ import android.util.SparseArray;
 		parts.addAll(createExplosionAux(bomb, -1, 0, Direction.LEFT, explosionOwner));
 		parts.addAll(createExplosionAux(bomb, 0, -1, Direction.UP, explosionOwner));
 		explosionParts.put(bomb.getExplosionId(), parts);
+		sendExplosion(parts);
 		activity.changeScore(explosionOwner);
 	}
 	
@@ -380,12 +381,12 @@ import android.util.SparseArray;
 		for(x = incrX, y = incrY; x != range && y != range ; x+= incrX, y+=incrY){
 			final char pos = map[startY+y][startX+x];
 			if(pos == OBSTACLE || (pos != WALL && map[startY+y+incrY][startX+x+incrX] == WALL)){
-				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y, Game.EXPLOSION));
+				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y, Game.EXPLOSION, bomb.getExplosionId()));
 				explosionOwner.addScore(destroy(startX+x, startY+y));
 				map[startY+y][startX+x] = EXPLOSION;
 				break;
 			} else if(pos != WALL){
-				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, false, startX+x, startY+y, Game.EXPLOSION));
+				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, false, startX+x, startY+y, Game.EXPLOSION, bomb.getExplosionId()));
 				explosionOwner.addScore(destroy(startX+x, startY+y));
 				map[startY+y][startX+x] = EXPLOSION;
 			} else {
@@ -394,7 +395,7 @@ import android.util.SparseArray;
 		}
 		if(x == range || y == range){
 			if(map[startY+y][startX+x] != WALL){
-				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y, Game.EXPLOSION));
+				parts.add(new ExplosionPart(gameMap.getContext(), bomb.getPlayerId(), direction, true, startX+x, startY+y, Game.EXPLOSION, bomb.getExplosionId()));
 				explosionOwner.addScore(destroy(startX+x, startY+y));
 				map[startY+y][startX+x] = EXPLOSION;
 			}
@@ -551,5 +552,9 @@ import android.util.SparseArray;
 	
 	protected void moveRobot(int id){
 		// .....
+	}
+	
+	protected void sendExplosion(List<ExplosionPart> parts){
+		
 	}
 }

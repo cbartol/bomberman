@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 
@@ -64,6 +65,10 @@ public class ServerGame extends Game {
 	
 	@Override
 	protected void moveRobot(int id){
+	}
+	
+	@Override
+	protected void sendExplosion(List<ExplosionPart> parts) {
 	}
 	
 	public void addClient(Socket socketClient) {
