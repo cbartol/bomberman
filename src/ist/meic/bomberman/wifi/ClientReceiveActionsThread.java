@@ -27,6 +27,7 @@ public class ClientReceiveActionsThread extends Thread {
 				case MOVE:
 					DrawableObject object = (DrawableObject) in.readObject();
 					object.setContext(game.getContext());
+					object.reloadImage();
 					endOfTheGame = in.readBoolean();
 					game.changeObject(object, endOfTheGame);
 					break;

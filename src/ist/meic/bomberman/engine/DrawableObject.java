@@ -12,13 +12,15 @@ public abstract class DrawableObject implements Serializable{
 	private int x;
 	private int y;
 	private static final int MATRIX_TO_PIXEL = 40; 
-	private Bitmap image;
+	transient private Bitmap image;
 	transient private Context context;
+	private int imageResId;
 	
 	public DrawableObject(Context c, int imageResId, int x, int y, char type){
 		this.context = c;
 		this.x = x;
 		this.y = y;
+		this.imageResId = imageResId;
 		image = BitmapFactory.decodeResource(c.getResources(), imageResId);
 	}
 	
@@ -41,6 +43,10 @@ public abstract class DrawableObject implements Serializable{
 	
 	public Bitmap getImage(){
 		return image;
+	}
+	
+	public void reloadImage(){
+		setImage(imageResId);
 	}
 	
 	protected void setImage(int imageId){
