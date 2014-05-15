@@ -13,7 +13,7 @@ public abstract class DrawableObject implements Serializable{
 	private int y;
 	private static final int MATRIX_TO_PIXEL = 40; 
 	private Bitmap image;
-	private Context context;
+	transient private Context context;
 	
 	public DrawableObject(Context c, int imageResId, int x, int y, char type){
 		this.context = c;
@@ -60,5 +60,8 @@ public abstract class DrawableObject implements Serializable{
 	}
 	public char getType() {
 		return type;
+	}
+	public void setContext(Context c){
+		this.context = c;
 	}
 }

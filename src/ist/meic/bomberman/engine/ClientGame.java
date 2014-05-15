@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.content.Context;
+
 public class ClientGame extends Thread implements IGame {
 	private ClientReceiveActionsThread receiveThread;
 	private Socket sendSocket;
@@ -42,6 +44,10 @@ public class ClientGame extends Thread implements IGame {
 		this.gameArea = gameArea;
 		this.server = server;
 		this. port = port;
+	}
+	
+	public Context getContext(){
+		return activity;
 	}
 	
 	@Override

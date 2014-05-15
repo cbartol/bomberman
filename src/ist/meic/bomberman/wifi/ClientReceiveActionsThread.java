@@ -26,6 +26,7 @@ public class ClientReceiveActionsThread extends Thread {
 				switch (ServerUpdateType.values()[in.readInt()]) {
 				case MOVE:
 					DrawableObject object = (DrawableObject) in.readObject();
+					object.setContext(game.getContext());
 					endOfTheGame = in.readBoolean();
 					game.changeObject(object, endOfTheGame);
 					break;
@@ -43,6 +44,9 @@ public class ClientReceiveActionsThread extends Thread {
 				case PUT_EXPLOSION:
 					explosionId = in.readInt();
 					List<ExplosionPart> expParts = (List<ExplosionPart>) in.readObject();
+					for (ExplosionPart explosionPart : expParts) {
+						explosionPart.setContext(game.getContext());
+					}
 					endOfTheGame = in.readBoolean();
 					game.addExplosions(explosionId, expParts, endOfTheGame);
 					break;
