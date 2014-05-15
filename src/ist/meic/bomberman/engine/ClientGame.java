@@ -64,20 +64,43 @@ public class ClientGame extends Thread implements IGame {
 			ObjectInputStream fetchState = new ObjectInputStream(sendSocket.getInputStream());
 			GameState state = (GameState) fetchState.readObject();
 			walls = state.getWalls();
+			for (Wall wall : walls) {
+			}
 			obstacles = Collections.synchronizedMap(new TreeMap<Integer, Obstacle>());
 			for (Obstacle obstacle : state.getObstacles()) {
 				obstacles.put(obstacle.getId(), obstacle);
+				obstacle.setContext(activity);
+				obstacle.reloadImage();
 			}
 			players = state.getPlayers();
+			for (Player player : players.values()) {
+				player.setContext(activity);
+				player.reloadImage();
+			}
 			playersAlive = state.getPlayersAlive();
+			for (Player player : playersAlive.values()) {
+				player.setContext(activity);
+				player.reloadImage();
+			}
 			robots = state.getRobots();
+			for (Robot robot : robots.values()) {
+				robot.setContext(activity);
+				robot.reloadImage();
+			}
 			
 			bombs = Collections.synchronizedMap(new TreeMap<Integer, Bomb>());
 			for (Bomb bomb : state.getBombs()) {
 				bombs.put(bomb.getExplosionId(), bomb);
+				bomb.setContext(activity);
+				bomb.reloadImage();
 			}
 			explosionParts = state.getExplosionParts();
-			
+			for (List<ExplosionPart> explosionPartGroup : explosionParts.values()) {
+				for (ExplosionPart explosionPart : explosionPartGroup) {
+					explosionPart.setContext(activity);
+					explosionPart.reloadImage();
+				}
+			}
 			width = state.getMapWidth();
 			height = state.getMapHeight();
 			
