@@ -6,7 +6,7 @@
     tools:context="ist.meic.bomberman.GameActivity" >
 
     <ist.meic.bomberman.engine.GameMapView
-        android:id="@+id/gameAreaSinglePlayer"
+        android:id="@+id/gameArea"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/buttonArea"

@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
-	private Game game;
-	private GameMapView gameArea;
-	private MapProperties mapProperties;
+	protected Game game;
+	protected GameMapView gameArea;
+	protected MapProperties mapProperties;
+	protected boolean isSinglePlayer = true;
+	
 	private int playerId = 1;
 	private SurfaceHolder surfaceHolder;
 	private Runnable drawCallback;
@@ -46,7 +48,7 @@ public class GameActivity extends Activity {
 		text = (TextView) findViewById(R.id.numberPlayers);
 		text.setText(getString(R.string.number_players) + "\n1");
 
-		gameArea = (GameMapView) findViewById(R.id.gameAreaSinglePlayer);
+		gameArea = (GameMapView) findViewById(R.id.gameArea);
 		surfaceHolder = gameArea.getHolder();
 		mHandler = new Handler();
 		drawCallback = new Runnable() {
@@ -78,8 +80,10 @@ public class GameActivity extends Activity {
 				} // end finally
 			}
 		};
-		game = new Game(this, gameArea, mapProperties, playerId, Game.SERVER);
-		startGame();
+		if(isSinglePlayer){
+			game = new Game(this, gameArea, mapProperties, 1);
+			startGame();
+		}
 	}
 
 	@Override

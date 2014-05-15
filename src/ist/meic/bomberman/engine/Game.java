@@ -27,8 +27,6 @@ import android.util.SparseArray;
  * For clients it's necessary to create a 'GameProxy' class that communicates with the server
  */
 @SuppressLint("UseSparseArrays") public class Game extends Thread{
-	public static final int CLIENT = 1;
-	public static final int SERVER = 0;
 	
 	// '0' + playerId --> player char on map
 	private static final char PLAYER = '0';
@@ -39,7 +37,6 @@ import android.util.SparseArray;
 	private static final char EMPTY = '-';
 	
 	private int maxPlayers = 1;
-	private int gameMode = SERVER;
 	
 	private MapProperties mapProperties;
 	private char[][] map;
@@ -71,8 +68,7 @@ import android.util.SparseArray;
 	/******************************************************
 	 ******************** Init section *********************
 	 ******************************************************/
-	public Game(final GameActivity a, GameMapView gameArea, MapProperties mapProp, int maxPlayers, int gameMode){
-		this.gameMode = gameMode;
+	public Game(final GameActivity a, GameMapView gameArea, MapProperties mapProp, int maxPlayers){
 		this.activity = a;
 		this.mapProperties = mapProp;
 		this.maxPlayers = maxPlayers;
@@ -112,9 +108,7 @@ import android.util.SparseArray;
 	@Override
 	public void run() {
 		mHandler.postDelayed(timePassing, 1000);
-		if(gameMode == SERVER){
-			mHandler.postDelayed(moveRobots,  (long) (1000/mapProperties.getRobotSpeed()));
-		}
+		mHandler.postDelayed(moveRobots,  (long) (1000/mapProperties.getRobotSpeed()));
 		isRunning = true;
 		synchronized (this) {
 			while(isRunning){
@@ -509,7 +503,9 @@ import android.util.SparseArray;
 			p.destroy();
 			if(object == EXPLOSION){
 				Player player = getPlayerOwnerOfTheExplosion(p.getX(), p.getY());
-				player.addScore(p);
+				if(player != null){
+					player.addScore(p);
+				}
 			} else if(object > PLAYER && object <= PLAYER + maxPlayers){ // when there is a player on the same position 
 				players.get(object - PLAYER).addScore(p);
 			}
