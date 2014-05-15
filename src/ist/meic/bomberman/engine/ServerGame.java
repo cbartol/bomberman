@@ -44,19 +44,26 @@ public class ServerGame extends Game {
 	}
 
 	@Override
-	protected synchronized void killPlayer(int id) {
-		super.killPlayer(id);
+	protected void destroyObject(char type, int id){
 		ObjectOutputStream os;
 		for (Socket s : clientsSockets.values()){
 			try {
 				os = new ObjectOutputStream(s.getOutputStream());
 				os.writeInt(ServerUpdateType.REMOVE.ordinal());
-				os.writeChar(PLAYER);
+				os.writeChar(type);
 				os.writeInt(id);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	protected void destroyExplosion(int explosionId){
+	}
+	
+	@Override
+	protected void moveRobot(int id){
 	}
 	
 	public void addClient(Socket socketClient) {
