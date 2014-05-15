@@ -5,8 +5,8 @@ import android.content.Context;
 public abstract class Entity extends DrawableObject {
 	private int dyingPoints;
 	
-	public Entity(Context c, int imageResId, int dyingPoints, int x, int y) {
-		super(c, imageResId, x, y);
+	public Entity(Context c, int imageResId, int dyingPoints, int x, int y, char type) {
+		super(c, imageResId, x, y, type);
 		this.dyingPoints = dyingPoints;
 	}
 

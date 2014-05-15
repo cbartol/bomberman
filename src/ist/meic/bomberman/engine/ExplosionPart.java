@@ -6,8 +6,8 @@ import android.content.Context;
 public class ExplosionPart extends DrawableObject {
 	private int playerOwner;
 	
-	public ExplosionPart(Context c, int playerOwner, Direction direction, boolean end, int x, int y) {
-		super(c, calculateImageId(direction, end), x, y);
+	public ExplosionPart(Context c, int playerOwner, Direction direction, boolean end, int x, int y, char type) {
+		super(c, calculateImageId(direction, end), x, y, type);
 		this.playerOwner = playerOwner;
 	}
 

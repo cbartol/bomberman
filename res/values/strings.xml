@@ -28,5 +28,9 @@
     <string name="you_lost">Game Over</string>
     <string name="pause_message">Game paused</string>
     <string name="resume">Resume</string>
+    <string name="title_create_server">Create Server</string>
+    <string name="title_find_server">Find Server</string>
+    <string name="title_client_game">Multiplayer Client</string>
+    <string name="title_server_game">Multiplayer Server</string>
 
 </resources>

@@ -18,6 +18,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/purple_button"
+        android:onClick = "joinserver"
         android:text="@string/joinserver" />
 
     <Button
@@ -29,6 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/purple_button"
+        android:onClick = "createserver"
         android:text="@string/createserver" />
 
 </RelativeLayout>

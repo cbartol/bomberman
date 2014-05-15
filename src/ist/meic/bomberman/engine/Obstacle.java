@@ -5,8 +5,8 @@ import android.content.Context;
 
 public class Obstacle extends DrawableObject {
 
-	public Obstacle(Context c, int x, int y) {
-		super(c, R.drawable.obstacle, x, y);
+	public Obstacle(Context c, int x, int y, char type) {
+		super(c, R.drawable.obstacle, x, y, type);
 	}
 
 }

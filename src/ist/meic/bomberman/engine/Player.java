@@ -9,8 +9,8 @@ public class Player extends Entity {
 	private boolean alive = true;
 	private boolean canDropBomb = true;
 
-	public Player(int id, Context c, int dyingPoints, int x, int y) {
-		super(c, getPlayerDrawable(c, id), dyingPoints, x, y);
+	public Player(int id, Context c, int dyingPoints, int x, int y, char type) {
+		super(c, getPlayerDrawable(c, id), dyingPoints, x, y, type);
 		this.id = id;
 	}
 

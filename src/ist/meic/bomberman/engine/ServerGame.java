@@ -20,8 +20,8 @@ public class ServerGame extends Game {
 			MapProperties mapProp, int maxPlayers) {
 		super(a, gameArea, mapProp, maxPlayers);
 		clientsSockets = new HashMap<Integer, Socket>();
-		mainThreadServer = new MainThreadServer((ServerGame) this);
-		mainThreadServer.run();
+		mainThreadServer = new MainThreadServer(this);
+		mainThreadServer.start();
 	}
 
 	@Override
@@ -38,5 +38,10 @@ public class ServerGame extends Game {
 	
 	private void updateGameState(Socket socketclient) {
 		
+	}
+	@Override
+	public void endGame() {
+		super.endGame();
+		mainThreadServer.interrupt();
 	}
 }
