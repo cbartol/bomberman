@@ -1,8 +1,10 @@
 package ist.meic.bomberman.engine;
 
+import java.io.Serializable;
+
 import android.content.Context;
 
-public class Player extends Entity {
+public class Player extends Entity implements Serializable{
 
 	private int id;
 	private int score = 0;

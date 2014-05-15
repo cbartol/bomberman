@@ -5,12 +5,13 @@ import ist.meic.bomberman.R.raw;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
 import android.app.Activity;
 
-public class MapProperties {
+public class MapProperties implements Serializable{
 	
 	private String name;
 	private int gameDuration;

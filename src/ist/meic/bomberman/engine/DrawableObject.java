@@ -1,11 +1,13 @@
 package ist.meic.bomberman.engine;
 
+import java.io.Serializable;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 
-public abstract class DrawableObject {
+public abstract class DrawableObject implements Serializable{
 	private char type;
 	private int x;
 	private int y;

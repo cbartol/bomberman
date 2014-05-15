@@ -1,9 +1,11 @@
 package ist.meic.bomberman.engine;
 
+import java.io.Serializable;
+
 import ist.meic.bomberman.R;
 import android.content.Context;
 
-public class ExplosionPart extends DrawableObject {
+public class ExplosionPart extends DrawableObject implements Serializable{
 	private int playerOwner;
 	private int explosionId;
 	
