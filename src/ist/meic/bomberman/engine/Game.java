@@ -525,6 +525,19 @@ import android.util.SparseArray;
 	public int getPlayerScore(int playerId){
 		return players.get(playerId).getScore();
 	}
+	
+	public int addIncomingPlayer() {
+		for (int i = 0; i < playersToEnterInGame.size(); i++) {
+			Player p = playersToEnterInGame.get(i);
+			if (p != null) {
+				playersToEnterInGame.delete(i);
+				playersAlive.put(i, p);
+				checkIfPlayerCanPlay(p);
+				return i;
+			}
+		}
+		return 0;		
+	}
 
 	public GameState getGameState(){
 		GameState result = new GameState();
@@ -535,7 +548,6 @@ import android.util.SparseArray;
 		result.setLevel(mapProperties.getLevel());
 		result.setMapWidth(width);
 		result.setMapHeight(height);
-		//result.setPlayerId();
 		result.setWalls(walls);
 		result.setBombs(bombs);
 		result.setRobots(robots);
