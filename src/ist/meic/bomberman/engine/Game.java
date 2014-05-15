@@ -555,6 +555,13 @@ import android.util.SparseArray;
 		return result;
 	}
 	
+	public Map<Integer, Robot> getRobots() {
+		return robots;
+	}
+
+	public void setRobots(Map<Integer, Robot> robots) {
+		this.robots = robots;
+	}
 	protected void destroyObject(char type, int id){
 		// .....
 	}

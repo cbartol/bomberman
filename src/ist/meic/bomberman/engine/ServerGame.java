@@ -61,14 +61,47 @@ public class ServerGame extends Game {
 
 	@Override
 	protected void destroyExplosion(int explosionId){
+		ObjectOutputStream os;
+		for (Socket s : clientsSockets.values()){
+			try {
+				os = new ObjectOutputStream(s.getOutputStream());
+				os.writeInt(ServerUpdateType.REMOVE_EXPLOSION.ordinal());
+				os.writeInt(explosionId);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
 	protected void moveRobot(int id){
+		super.moveRobot(id);
+		ObjectOutputStream os;
+		/* Send message to players with the movement */
+		for (Socket s : clientsSockets.values()){
+			try {
+				os = new ObjectOutputStream(s.getOutputStream());
+				os.writeInt(ServerUpdateType.MOVE.ordinal());
+				os.writeObject(super.getRobots().get(id));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
 	protected void sendExplosion(List<ExplosionPart> parts) {
+		ObjectOutputStream os;
+		/* Send message to players with the movement */
+		for (Socket s : clientsSockets.values()){
+			try {
+				os = new ObjectOutputStream(s.getOutputStream());
+				os.writeInt(ServerUpdateType.PUT_EXPLOSION.ordinal());
+				os.writeObject(parts);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void addClient(Socket socketClient) {
