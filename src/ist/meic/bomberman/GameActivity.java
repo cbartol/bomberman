@@ -36,18 +36,7 @@ public class GameActivity extends Activity {
 				"level", 1));
 		setContentView(R.layout.activity_game);
 
-		TextView text = (TextView) findViewById(R.id.playerName);
-		text.setText(getString(R.string.player_name) + "\nplayer1");
-
-		text = (TextView) findViewById(R.id.playerScore);
-		text.setText(getString(R.string.player_score) + "\n0");
-
-		text = (TextView) findViewById(R.id.timeLeft);
-		text.setText(getString(R.string.time_left) + "\n"
-				+ mapProperties.getGameDuration());
-
-		text = (TextView) findViewById(R.id.numberPlayers);
-		text.setText(getString(R.string.number_players) + "\n1");
+		updateInfo();
 
 		gameArea = (GameMapView) findViewById(R.id.gameArea);
 		surfaceHolder = gameArea.getHolder();
@@ -85,6 +74,21 @@ public class GameActivity extends Activity {
 			game = new Game(this, gameArea, mapProperties, 1);
 			startGame();
 		}
+	}
+	
+	public void updateInfo(){
+		TextView text = (TextView) findViewById(R.id.playerName);
+		text.setText(getString(R.string.player_name) + "\nplayer" + playerId);
+
+		text = (TextView) findViewById(R.id.playerScore);
+		text.setText(getString(R.string.player_score) + "\n0");
+
+		text = (TextView) findViewById(R.id.timeLeft);
+		text.setText(getString(R.string.time_left) + "\n"
+				+ mapProperties.getGameDuration());
+
+		text = (TextView) findViewById(R.id.numberPlayers);
+		text.setText(getString(R.string.number_players) + "\n" + playerId);
 	}
 
 	@Override

@@ -9,13 +9,12 @@ public class MultiplayerClientGameActivity extends GameActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		this.isSinglePlayer = false;
-		//read from intent the server and port
+		String server = getIntent().getExtras().getString("ip");
+		int port = getIntent().getExtras().getInt("port", 20000);
 		super.onCreate(savedInstanceState);
-		String server = "localhost";
-		int port = 20000;
-		
 		try {
 			this.game = new ClientGame(this, gameArea, server, port);
+			super.updateInfo();
 			game.start();
 		} catch (Exception e) {
 			e.printStackTrace();

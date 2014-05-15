@@ -213,6 +213,7 @@ import android.util.SparseArray;
 			for (Integer playerId : playerIds) {
 				killPlayer(playerId);
 			}
+			moveRobot(robot.getId());
 		}
 	}
 	
@@ -297,6 +298,7 @@ import android.util.SparseArray;
 		Player player = getPlayer(id);
 		map[player.getY()][player.getX()] = EMPTY;
 		player.destroy();
+		destroyObject(PLAYER, id);
 		playersAlive.remove(id);
 	}
 	
@@ -329,6 +331,8 @@ import android.util.SparseArray;
 					explosionParts.get(bomb.getExplosionId()).clear();
 					explosionParts.remove(bomb.getExplosionId());
 				}
+				destroyObject(BOMB, /*bomb.getId()*/ 0);
+				destroyExplosion(bomb.getExplosionId());
 				bombs.remove(bomb);
 				players.get(bomb.getPlayerId()).canDropBomb(true);
 				activity.draw(isTheEndOfTheGame());				
@@ -408,6 +412,7 @@ import android.util.SparseArray;
 					Robot robot = it.next();
 					if(robot.getX() == posX && robot.getY() == posY){
 						robot.destroy(); //increment player score
+						destroyObject(ROBOT, robot.getId());
 						entityDestroyed = robot;
 						it.remove();
 						break;
@@ -417,6 +422,7 @@ import android.util.SparseArray;
 		} else if(object > PLAYER && object <= PLAYER + maxPlayers){
 			final Player player = players.get(object - PLAYER);
 			playersAlive.remove(player.getId());
+			destroyObject(PLAYER, player.getId());
 			player.destroy(); //increment player score
 			entityDestroyed = player; 
 		} else if(object == OBSTACLE) {
@@ -424,6 +430,7 @@ import android.util.SparseArray;
 			while(it.hasNext()){
 				Obstacle obstacle = it.next();
 				if(obstacle.getX() == posX && obstacle.getY() == posY){
+					destroyObject(OBSTACLE, /*put obstacleId here*/ 0);
 					it.remove();
 					break;
 				}
@@ -533,5 +540,16 @@ import android.util.SparseArray;
 		result.setObstacles(obstacles);
 		result.setExplosionParts(explosionParts);
 		return result;
+	}
+	
+	protected void destroyObject(char type, int id){
+		// .....
+	}
+	protected void destroyExplosion(int explosionId){
+		// .....
+	}
+	
+	protected void moveRobot(int id){
+		// .....
 	}
 }

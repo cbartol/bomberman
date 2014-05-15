@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,7 @@ public class ClientGame implements IGame {
 	private GameActivity activity;
 	
 	private List<Wall> walls;
-	private Map<Integer, Obstacle> obstacles; 
-	private List<Obstacle> obstaclesOld; // passar para mapa 
+	private List<Obstacle> obstacles; 
 	private Map<Integer, Player> players;
 	private Map<Integer, Player> playersAlive;
 	private Map<Integer, Robot> robots;
@@ -48,11 +48,11 @@ public class ClientGame implements IGame {
 		ObjectInputStream fetchState = new ObjectInputStream(sendSocket.getInputStream());
 		GameState state = (GameState) fetchState.readObject();
 		walls = state.getWalls();
-		obstaclesOld = state.getObstacles();
+		obstacles = state.getObstacles();
 		players = state.getPlayers();
 		playersAlive = state.getPlayersAlive();
 		robots = state.getRobots();
-		bombsOld = state.getBombs();
+		bombsOld = state.getBombs(); // TODO
 		explosionParts = state.getExplosionParts();
 		
 		width = state.getMapWidth();
@@ -153,10 +153,25 @@ public class ClientGame implements IGame {
 				robots.put(robot.getId(), robot);
 				break;
 			case Game.OBSTACLE:
-				Obstacle obstacle = (Obstacle) object;
-				//players.put(obstacle.getId(), obstacle);
+				int posX = object.getX();
+				int posY = object.getY();
+				synchronized (obstacles) {
+					Iterator<Obstacle> it = obstacles.iterator();
+					while(it.hasNext()){
+						Obstacle obstacle = it.next();
+						if(obstacle.getX() == posX && obstacle.getY() == posY){
+							it.remove();
+							break;
+						}
+					}
+				}
 				break;
 			case Game.EXPLOSION:
+				
+				break;
+			case Game.BOMB:
+				Bomb bomb = (Bomb) object; 
+				bombs.put(bomb.getExplosionId(), bomb);
 				break;
 			default:
 				// ????
@@ -178,8 +193,7 @@ public class ClientGame implements IGame {
 			case Game.OBSTACLE:
 				//players.remove(id);
 				break;
-			case Game.EXPLOSION:
-				
+			case Game.BOMB:
 				break;
 			default:
 				// ????
@@ -209,7 +223,7 @@ public class ClientGame implements IGame {
 	public List<DrawableObject> getObjectsToDraw() {
 		List<DrawableObject> objects = new LinkedList<DrawableObject>();
 		objects.addAll(robots.values());
-		objects.addAll(obstaclesOld);
+		objects.addAll(obstacles);
 		objects.addAll(playersAlive.values());
 		objects.addAll(bombsOld);
 		for (List<ExplosionPart> drawableObjects : explosionParts.values()) {
