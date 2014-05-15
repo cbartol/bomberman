@@ -1,9 +1,11 @@
 package ist.meic.bomberman.engine;
 
 import ist.meic.bomberman.GameActivity;
-import ist.meic.bomberman.multiplayer.GameState;
 import ist.meic.bomberman.wifi.MainThreadServer;
+import ist.meic.bomberman.wifi.ServerUpdateType;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
@@ -28,7 +30,33 @@ public class ServerGame extends Game {
 	@Override
 	public synchronized void movePlayer(int id, Direction direction) {
 		super.movePlayer(id, direction);
+		ObjectOutputStream os;
 		/* Send message to players with the movement */
+		for (Socket s : clientsSockets.values()){
+			try {
+				os = new ObjectOutputStream(s.getOutputStream());
+				os.writeInt(ServerUpdateType.MOVE.ordinal());
+				os.writeObject(super.getPlayer(id));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	protected synchronized void killPlayer(int id) {
+		super.killPlayer(id);
+		ObjectOutputStream os;
+		for (Socket s : clientsSockets.values()){
+			try {
+				os = new ObjectOutputStream(s.getOutputStream());
+				os.writeInt(ServerUpdateType.REMOVE.ordinal());
+				os.writeChar(PLAYER);
+				os.writeInt(id);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void addClient(Socket socketClient) {
