@@ -1,6 +1,7 @@
 package ist.meic.bomberman.wifi;
 
 import ist.meic.bomberman.engine.ServerGame;
+import ist.meic.bomberman.multiplayer.GameState;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -39,11 +40,15 @@ public class MainThreadServer extends Thread {
 				if(isClientRead) {
 					game.addClient(clientSocket);					
 				} else {
+					// We assume that we never exceed the maximum number of players
+					int playerId = game.addIncomingPlayer();
 					ServerReceiver thread = new ServerReceiver(clientSocket, game);
 					threads.add(thread);
 					thread.start();
 					ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-					os.writeObject(game.getGameState());
+					GameState result = game.getGameState();
+					result.setPlayerId(playerId);
+					os.writeObject(result);
 				}
 			}
 
