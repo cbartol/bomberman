@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ClientGame implements IGame {
 	private ClientReceiveActionsThread receiveThread;
@@ -23,16 +24,14 @@ public class ClientGame implements IGame {
 	private GameActivity activity;
 	
 	private List<Wall> walls;
-	private List<Obstacle> obstacles; 
+	private Map<Integer, Obstacle> obstacles; 
 	private Map<Integer, Player> players;
 	private Map<Integer, Player> playersAlive;
 	private Map<Integer, Robot> robots;
 	private Map<Integer, Bomb> bombs;
-	private List<Bomb> bombsOld; // passar para mapa
 	private Map<Integer, List<ExplosionPart>> explosionParts;
 	private int width;
 	private int height;
-	private int playerId;
 	
 	private DataOutputStream out;
 	private DataInputStream in;
@@ -48,11 +47,18 @@ public class ClientGame implements IGame {
 		ObjectInputStream fetchState = new ObjectInputStream(sendSocket.getInputStream());
 		GameState state = (GameState) fetchState.readObject();
 		walls = state.getWalls();
-		obstacles = state.getObstacles();
+		obstacles = Collections.synchronizedMap(new TreeMap<Integer, Obstacle>());
+		for (Obstacle obstacle : state.getObstacles()) {
+			obstacles.put(obstacle.getId(), obstacle);
+		}
 		players = state.getPlayers();
 		playersAlive = state.getPlayersAlive();
 		robots = state.getRobots();
-		bombsOld = state.getBombs(); // TODO
+		
+		bombs = Collections.synchronizedMap(new TreeMap<Integer, Bomb>());
+		for (Bomb bomb : state.getBombs()) {
+			bombs.put(bomb.getExplosionId(), bomb);
+		}
 		explosionParts = state.getExplosionParts();
 		
 		width = state.getMapWidth();
@@ -100,8 +106,7 @@ public class ClientGame implements IGame {
 
 	@Override
 	public void endGame() {
-		// TODO Auto-generated method stub
-
+		receiveThread.interrupt();
 	}
 
 	@Override
@@ -141,7 +146,7 @@ public class ClientGame implements IGame {
 		return playersAlive.get(playerId).getScore();
 	}
 
-	public void changeObject(DrawableObject object) {
+	public void changeObject(DrawableObject object, boolean isEndOftheGame) {
 		char type = object.getType();
 		switch (type) {
 			case Game.PLAYER:
@@ -152,23 +157,6 @@ public class ClientGame implements IGame {
 				Robot robot = (Robot) object;
 				robots.put(robot.getId(), robot);
 				break;
-			case Game.OBSTACLE:
-				int posX = object.getX();
-				int posY = object.getY();
-				synchronized (obstacles) {
-					Iterator<Obstacle> it = obstacles.iterator();
-					while(it.hasNext()){
-						Obstacle obstacle = it.next();
-						if(obstacle.getX() == posX && obstacle.getY() == posY){
-							it.remove();
-							break;
-						}
-					}
-				}
-				break;
-			case Game.EXPLOSION:
-				
-				break;
 			case Game.BOMB:
 				Bomb bomb = (Bomb) object; 
 				bombs.put(bomb.getExplosionId(), bomb);
@@ -178,11 +166,10 @@ public class ClientGame implements IGame {
 				break;
 		}
 		// change the list
-		boolean isEndOftheGame = false;
 		activity.draw(isEndOftheGame);
 	}
 
-	public void removeObject(char type, int id) {
+	public void removeObject(char type, int id, boolean isEndOftheGame) {
 		switch (type) {
 			case Game.PLAYER:
 				players.remove(id);
@@ -191,25 +178,28 @@ public class ClientGame implements IGame {
 				robots.remove(id);
 				break;
 			case Game.OBSTACLE:
-				//players.remove(id);
+				obstacles.remove(id);
 				break;
 			case Game.BOMB:
+				bombs.remove(id);
 				break;
 			default:
 				// ????
 				break;
 		}
-		// change the list
-		boolean isEndOftheGame = false;
 		activity.draw(isEndOftheGame);
 	}
 	
-	public void addExplosions(int explosionId, List<ExplosionPart> expParts){
+	public void addExplosions(int explosionId, List<ExplosionPart> expParts, boolean isEndOftheGame){
 		explosionParts.put(explosionId, expParts);
+		bombs.get(explosionId).explode();
+		activity.draw(isEndOftheGame);
 	}
 
-	public void removeExplosions(int explosionId){
+	public void removeExplosions(int explosionId, boolean isEndOftheGame){
 		explosionParts.remove(explosionId);
+		bombs.remove(explosionId);
+		activity.draw(isEndOftheGame);
 	}
 	
 	@Override
@@ -223,9 +213,9 @@ public class ClientGame implements IGame {
 	public List<DrawableObject> getObjectsToDraw() {
 		List<DrawableObject> objects = new LinkedList<DrawableObject>();
 		objects.addAll(robots.values());
-		objects.addAll(obstacles);
+		objects.addAll(obstacles.values());
 		objects.addAll(playersAlive.values());
-		objects.addAll(bombsOld);
+		objects.addAll(bombs.values());
 		for (List<ExplosionPart> drawableObjects : explosionParts.values()) {
 			objects.addAll(drawableObjects);
 		}

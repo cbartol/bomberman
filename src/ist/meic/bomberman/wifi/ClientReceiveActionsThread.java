@@ -22,25 +22,29 @@ public class ClientReceiveActionsThread extends Thread {
 		try{
 			while(true){
 				ObjectInputStream in = new ObjectInputStream(connectionSocket.getInputStream());
-				
+				boolean endOfTheGame;
 				switch (ServerUpdateType.values()[in.readInt()]) {
 				case MOVE:
 					DrawableObject object = (DrawableObject) in.readObject();
-					game.changeObject(object);
+					endOfTheGame = in.readBoolean();
+					game.changeObject(object, endOfTheGame);
 					break;
 				case REMOVE:
 					char type = in.readChar();
 					int id = in.readInt();
-					game.removeObject(type, id);
+					endOfTheGame = in.readBoolean();
+					game.removeObject(type, id, endOfTheGame);
 					break;
 				case REMOVE_EXPLOSION:
 					int explosionId = in.readInt();
-					game.removeExplosions(explosionId);;
+					endOfTheGame = in.readBoolean();
+					game.removeExplosions(explosionId, endOfTheGame);;
 					break;
 				case PUT_EXPLOSION:
 					explosionId = in.readInt();
 					List<ExplosionPart> expParts = (List<ExplosionPart>) in.readObject();
-					game.addExplosions(explosionId, expParts);
+					endOfTheGame = in.readBoolean();
+					game.addExplosions(explosionId, expParts, endOfTheGame);
 					break;
 				}
 			}

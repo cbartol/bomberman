@@ -60,6 +60,7 @@ import android.util.SparseArray;
 	private SparseArray<Player> playersToEnterInGame = new SparseArray<Player>(); 
 	private int explosionIdGenerator = 0;
 	private int robotIdGenerator = 0;
+	private int obstacleIdGenerator = 0;
 	
 	private Handler mHandler;
 	private Runnable moveRobots;
@@ -164,7 +165,7 @@ import android.util.SparseArray;
 					final int robotId = robotIdGenerator++;
 					robots.put(robotId, new Robot(activity, robotId, mapProperties.getRobotKilledPoints(), j, i, Game.ROBOT));
 				} else if(object == OBSTACLE){
-					obstacles.add(new Obstacle(activity, j, i, Game.OBSTACLE));
+					obstacles.add(new Obstacle(activity, j, i, Game.OBSTACLE, obstacleIdGenerator++));
 				} else if(object > PLAYER && object <= PLAYER + maxPlayers){
 					final int playerId = object - PLAYER;
 					final Player p = new Player(playerId, activity, mapProperties.getPlayerKilledPoints(), j, i, Game.PLAYER);
@@ -480,7 +481,7 @@ import android.util.SparseArray;
 		return height;
 	}
 	
-	private boolean isTheEndOfTheGame(){
+	protected boolean isTheEndOfTheGame(){
 		return timeLeft <= 0 || (robots.size() == 0 && playersAlive.size() <= 1) || playersAlive.size() == 0;
 	}
 	
@@ -562,6 +563,8 @@ import android.util.SparseArray;
 	}
 	
 	protected void sendExplosion(List<ExplosionPart> parts){
-		
+	}
+	
+	protected void sendBomb(Bomb bomb){
 	}
 }

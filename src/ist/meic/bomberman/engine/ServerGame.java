@@ -38,6 +38,7 @@ public class ServerGame extends Game {
 				os = new ObjectOutputStream(s.getOutputStream());
 				os.writeInt(ServerUpdateType.MOVE.ordinal());
 				os.writeObject(super.getPlayer(id));
+				os.writeBoolean(isTheEndOfTheGame());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -53,6 +54,7 @@ public class ServerGame extends Game {
 				os.writeInt(ServerUpdateType.REMOVE.ordinal());
 				os.writeChar(type);
 				os.writeInt(id);
+				os.writeBoolean(isTheEndOfTheGame());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -67,6 +69,7 @@ public class ServerGame extends Game {
 				os = new ObjectOutputStream(s.getOutputStream());
 				os.writeInt(ServerUpdateType.REMOVE_EXPLOSION.ordinal());
 				os.writeInt(explosionId);
+				os.writeBoolean(isTheEndOfTheGame());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -83,6 +86,7 @@ public class ServerGame extends Game {
 				os = new ObjectOutputStream(s.getOutputStream());
 				os.writeInt(ServerUpdateType.MOVE.ordinal());
 				os.writeObject(super.getRobots().get(id));
+				os.writeBoolean(isTheEndOfTheGame());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -98,6 +102,23 @@ public class ServerGame extends Game {
 				os = new ObjectOutputStream(s.getOutputStream());
 				os.writeInt(ServerUpdateType.PUT_EXPLOSION.ordinal());
 				os.writeObject(parts);
+				os.writeBoolean(isTheEndOfTheGame());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	protected void sendBomb(Bomb bomb) {
+		ObjectOutputStream os;
+		/* Send message to players with the movement */
+		for (Socket s : clientsSockets.values()){
+			try {
+				os = new ObjectOutputStream(s.getOutputStream());
+				os.writeInt(ServerUpdateType.MOVE.ordinal());
+				os.writeObject(bomb);
+				os.writeBoolean(isTheEndOfTheGame());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
