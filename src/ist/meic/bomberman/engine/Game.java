@@ -294,7 +294,7 @@ import android.util.SparseArray;
 		return playersFound;
 	}
 	
-	private synchronized void killPlayer(int id){
+	protected synchronized void killPlayer(int id){
 		Player player = getPlayer(id);
 		map[player.getY()][player.getX()] = EMPTY;
 		player.destroy();
