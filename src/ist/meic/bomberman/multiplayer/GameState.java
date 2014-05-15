@@ -23,7 +23,7 @@ public class GameState implements Serializable {
 			.synchronizedMap(new HashMap<Integer, Player>());
 	private Map<Integer, Player> pausedPlayers = Collections
 			.synchronizedMap(new HashMap<Integer, Player>());
-	private SparseArray<Player> playersToEnterInGame = new SparseArray<Player>();
+	//private SparseArray<Player> playersToEnterInGame = new SparseArray<Player>();
 	private int level;
 	private int mapWidth;
 	private int mapHeight;
@@ -87,13 +87,13 @@ public class GameState implements Serializable {
 		this.pausedPlayers = pausedPlayers;
 	}
 
-	public SparseArray<Player> getPlayersToEnterInGame() {
-		return playersToEnterInGame;
-	}
-
-	public void setPlayersToEnterInGame(SparseArray<Player> playersToEnterInGame) {
-		this.playersToEnterInGame = playersToEnterInGame;
-	}
+//	public SparseArray<Player> getPlayersToEnterInGame() {
+//		return playersToEnterInGame;
+//	}
+//
+//	public void setPlayersToEnterInGame(SparseArray<Player> playersToEnterInGame) {
+//		this.playersToEnterInGame = playersToEnterInGame;
+//	}
 
 	public int getLevel() {
 		return level;

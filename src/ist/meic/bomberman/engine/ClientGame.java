@@ -7,6 +7,7 @@ import ist.meic.bomberman.wifi.PlayerAction;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.Collections;
@@ -92,6 +93,12 @@ public class ClientGame extends Thread implements IGame {
 			receiveThread = new ClientReceiveActionsThread(this, receiveSocket);
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				sendSocket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

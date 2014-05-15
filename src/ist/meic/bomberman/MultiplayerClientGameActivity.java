@@ -10,7 +10,7 @@ public class MultiplayerClientGameActivity extends GameActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		this.isSinglePlayer = false;
 		String server = getIntent().getExtras().getString("ip");
-		int port = getIntent().getExtras().getInt("port", 20000);
+		int port = 20000; //getIntent().getExtras().getInt("port", 20000);
 		super.onCreate(savedInstanceState);
 		this.game = new ClientGame(this, gameArea, server, port);
 		game.start();

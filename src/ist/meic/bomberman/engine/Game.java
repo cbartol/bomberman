@@ -544,7 +544,7 @@ import android.util.SparseArray;
 		result.setPlayersAlive(playersAlive);
 		result.setPlayers(players);
 		result.setPausedPlayers(pausedPlayers);
-		result.setPlayersToEnterInGame(playersToEnterInGame);
+		//result.setPlayersToEnterInGame(playersToEnterInGame);
 		result.setLevel(mapProperties.getLevel());
 		result.setMapWidth(width);
 		result.setMapHeight(height);
