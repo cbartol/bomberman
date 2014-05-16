@@ -39,8 +39,8 @@ public class ServerGame extends Game {
 				try {
 					os = new ObjectOutputStream(s.getOutputStream());
 					os.writeInt(ServerUpdateType.MOVE.ordinal());
-					os.writeObject(super.getPlayer(id));
 					os.writeBoolean(isTheEndOfTheGame());
+					os.writeObject(super.getPlayer(id));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -57,9 +57,9 @@ public class ServerGame extends Game {
 				try {
 					os = new ObjectOutputStream(s.getOutputStream());
 					os.writeInt(ServerUpdateType.REMOVE.ordinal());
+					os.writeBoolean(isTheEndOfTheGame());
 					os.writeChar(type);
 					os.writeInt(id);
-					os.writeBoolean(isTheEndOfTheGame());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -76,8 +76,8 @@ public class ServerGame extends Game {
 				try {
 					os = new ObjectOutputStream(s.getOutputStream());
 					os.writeInt(ServerUpdateType.REMOVE_EXPLOSION.ordinal());
-					os.writeInt(explosionId);
 					os.writeBoolean(isTheEndOfTheGame());
+					os.writeInt(explosionId);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -95,8 +95,8 @@ public class ServerGame extends Game {
 				try {
 					os = new ObjectOutputStream(s.getOutputStream());
 					os.writeInt(ServerUpdateType.MOVE.ordinal());
-					os.writeObject(robot);
 					os.writeBoolean(isTheEndOfTheGame());
+					os.writeObject(robot);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -114,8 +114,8 @@ public class ServerGame extends Game {
 				try {
 					os = new ObjectOutputStream(s.getOutputStream());
 					os.writeInt(ServerUpdateType.PUT_EXPLOSION.ordinal());
-					os.writeObject(parts);
 					os.writeBoolean(isTheEndOfTheGame());
+					os.writeObject(parts);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -132,8 +132,8 @@ public class ServerGame extends Game {
 				try {
 					os = new ObjectOutputStream(s.getOutputStream());
 					os.writeInt(ServerUpdateType.MOVE.ordinal());
-					os.writeObject(bomb);
 					os.writeBoolean(isTheEndOfTheGame());
+					os.writeObject(bomb);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
