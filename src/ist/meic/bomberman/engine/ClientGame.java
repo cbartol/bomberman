@@ -116,6 +116,7 @@ public class ClientGame extends Thread implements IGame {
 			outToServer = new DataOutputStream(receiveSocket.getOutputStream());
 			outToServer.writeBoolean(true);
 			receiveThread = new ClientReceiveActionsThread(this, receiveSocket);
+			receiveThread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
