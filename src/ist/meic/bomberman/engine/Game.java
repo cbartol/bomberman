@@ -530,10 +530,10 @@ import android.util.SparseArray;
 		for (int i = 0; i < playersToEnterInGame.size(); i++) {
 			Player p = playersToEnterInGame.get(i);
 			if (p != null) {
-				playersToEnterInGame.delete(i);
-				playersAlive.put(i, p);
+				playersToEnterInGame.delete(p.getId());
+				playersAlive.put(p.getId(), p);
 				checkIfPlayerCanPlay(p);
-				return i;
+				return p.getId();
 			}
 		}
 		return 0;		

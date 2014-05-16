@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import android.util.SparseArray;
-
 public class GameState implements Serializable {
 	private Map<Integer, Player> playersAlive = Collections
 			.synchronizedMap(new HashMap<Integer, Player>());

@@ -8,6 +8,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import android.util.Log;
+
 public class ServerReceiver extends Thread {
 	private Socket socket;
 	private ServerGame game;
@@ -28,6 +30,7 @@ public class ServerReceiver extends Thread {
 				switch(PlayerAction.values()[action]){
 					case MOVE:
 						int direction =  is.readInt();
+						Log.i("MOVE Player", "player ID: " + playerId);
 						game.movePlayer(playerId, Direction.values()[direction]);
 						break;
 					case DROP_BOMB:
