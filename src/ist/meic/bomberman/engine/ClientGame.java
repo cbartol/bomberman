@@ -193,12 +193,12 @@ public class ClientGame extends Thread implements IGame {
 				Player player = (Player) object;
 				players.put(player.getId(), player);
 				playersAlive.put(player.getId(), player);
-				Log.i("MOVE", "Moving robot id:" + player.getId());
+				Log.i("MOVE", "Moving player id:" + player.getId());
 				break;
 			case Game.ROBOT:
 				Robot robot = (Robot) object;
 				robots.put(robot.getId(), robot);
-				Log.i("MOVE", "Moving player id:" + robot.getId());
+				Log.i("MOVE", "Moving robot id:" + robot.getId());
 				break;
 			case Game.BOMB:
 				Bomb bomb = (Bomb) object; 
