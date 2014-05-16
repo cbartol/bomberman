@@ -65,6 +65,8 @@ public class ClientGame extends Thread implements IGame {
 			GameState state = (GameState) fetchState.readObject();
 			walls = state.getWalls();
 			for (Wall wall : walls) {
+				wall.setContext(activity);
+				wall.reloadImage();
 			}
 			obstacles = Collections.synchronizedMap(new TreeMap<Integer, Obstacle>());
 			for (Obstacle obstacle : state.getObstacles()) {
