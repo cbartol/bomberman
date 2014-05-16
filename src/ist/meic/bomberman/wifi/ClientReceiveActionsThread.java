@@ -4,6 +4,8 @@ import ist.meic.bomberman.engine.ClientGame;
 import ist.meic.bomberman.engine.DrawableObject;
 import ist.meic.bomberman.engine.ExplosionPart;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.List;
@@ -12,17 +14,24 @@ import android.util.Log;
 
 public class ClientReceiveActionsThread extends Thread {
 	private ClientGame game;
-	private Socket connectionSocket;
+	private String server;
+	private int port;
 	
-	public ClientReceiveActionsThread(ClientGame game, Socket socket){
+	public ClientReceiveActionsThread(ClientGame game, String server, int port){
 		this.game = game;
-		this.connectionSocket = socket;
+		this.server = server;
+		this.port = port;
 	}
 	
 	@Override
 	public void run() {
+		Socket receiveSocket = null;
 		try{
-			ObjectInputStream in = new ObjectInputStream(connectionSocket.getInputStream());
+			receiveSocket = new Socket(server,port);
+			DataOutputStream outToServer = new DataOutputStream(receiveSocket.getOutputStream());
+			outToServer.writeBoolean(true);
+
+			ObjectInputStream in = new ObjectInputStream(receiveSocket.getInputStream());
 			while(true){
 				boolean endOfTheGame;
 				while(in.available() > 0){
@@ -65,6 +74,11 @@ public class ClientReceiveActionsThread extends Thread {
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			try {
+				receiveSocket.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

@@ -106,10 +106,7 @@ public class ClientGame extends Thread implements IGame {
 			activity.releaseTheUI();
 			
 				
-			Socket receiveSocket = new Socket(server,port);
-			outToServer = new DataOutputStream(receiveSocket.getOutputStream());
-			outToServer.writeBoolean(true);
-			receiveThread = new ClientReceiveActionsThread(this, receiveSocket);
+			receiveThread = new ClientReceiveActionsThread(this, server, port);
 			receiveThread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,6 +117,7 @@ public class ClientGame extends Thread implements IGame {
 				e1.printStackTrace();
 			}
 		}
+		
 	}
 
 	@Override
