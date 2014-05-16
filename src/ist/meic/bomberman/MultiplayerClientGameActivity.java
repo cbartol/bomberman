@@ -15,11 +15,11 @@ public class MultiplayerClientGameActivity extends GameActivity {
 		this.game = new ClientGame(this, gameArea, server, port);
 		game.start();
 		while(stuck);
-		super.updateInfo();
 	}
 
 	public void setPlayerId(int playerId) {
 		this.playerId = playerId;
+		super.updateInfo();
 	}
 
 	public void releaseTheUI() {

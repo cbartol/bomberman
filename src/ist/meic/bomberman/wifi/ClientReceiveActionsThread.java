@@ -26,34 +26,35 @@ public class ClientReceiveActionsThread extends Thread {
 				ObjectInputStream in = new ObjectInputStream(connectionSocket.getInputStream());
 				boolean endOfTheGame;
 				int action = in.readInt();
+				Log.i("ACTION", "Got action " + ServerUpdateType.values()[action].name());
 				switch (ServerUpdateType.values()[action]) {
 				case MOVE:
+					endOfTheGame = in.readBoolean();
 					DrawableObject object = (DrawableObject) in.readObject();
 					object.setContext(game.getContext());
-					endOfTheGame = in.readBoolean();
 					Log.i("Got a move", "check next log message... " + object.getType() + " is the end?" + endOfTheGame);
 					game.changeObject(object, endOfTheGame);
 					break;
 				case REMOVE:
+					endOfTheGame = in.readBoolean();
 					char type = in.readChar();
 					int id = in.readInt();
-					endOfTheGame = in.readBoolean();
 					Log.i("REMOVE", "type: " + type + " id:" + id  + " is the end?" + endOfTheGame);
 					game.removeObject(type, id, endOfTheGame);
 					break;
 				case REMOVE_EXPLOSION:
-					int explosionId = in.readInt();
 					endOfTheGame = in.readBoolean();
+					int explosionId = in.readInt();
 					Log.i("REMOVE EXPLOSION", " id:" + explosionId  + " is the end?" + endOfTheGame);
 					game.removeExplosions(explosionId, endOfTheGame);
 					break;
 				case PUT_EXPLOSION:
+					endOfTheGame = in.readBoolean();
 					explosionId = in.readInt();
 					List<ExplosionPart> expParts = (List<ExplosionPart>) in.readObject();
 					for (ExplosionPart explosionPart : expParts) {
 						explosionPart.setContext(game.getContext());
 					}
-					endOfTheGame = in.readBoolean();
 					Log.i("PUT EXPLOSION", " id:" + explosionId  + " size:"+ expParts.size() +" is the end?" + endOfTheGame);
 					game.addExplosions(explosionId, expParts, endOfTheGame);
 					break;

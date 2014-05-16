@@ -20,6 +20,7 @@ public abstract class DrawableObject implements Serializable{
 		this.context = c;
 		this.x = x;
 		this.y = y;
+		this.type = type;
 		this.imageResId = imageResId;
 		image = BitmapFactory.decodeResource(c.getResources(), imageResId);
 	}
