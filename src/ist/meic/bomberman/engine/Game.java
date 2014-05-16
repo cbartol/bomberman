@@ -16,12 +16,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
-import android.util.SparseArray;
 /*
  * This class will be used for multiplayer on the server side.
  * For clients it's necessary to create a 'GameProxy' class that communicates with the server
@@ -57,7 +57,7 @@ import android.util.SparseArray;
 	private Map<Integer,Player> playersAlive =  Collections.synchronizedMap(new HashMap<Integer,Player>());
 	private Map<Integer,Player> players =  Collections.synchronizedMap(new HashMap<Integer,Player>());
 	private Map<Integer,Player> pausedPlayers = Collections.synchronizedMap(new HashMap<Integer,Player>());
-	private SparseArray<Player> playersToEnterInGame = new SparseArray<Player>(); 
+	private Map<Integer, Player> playersToEnterInGame = Collections.synchronizedMap(new TreeMap<Integer, Player>()); 
 	private int explosionIdGenerator = 0;
 	private int robotIdGenerator = 0;
 	private int obstacleIdGenerator = 0;
@@ -527,14 +527,16 @@ import android.util.SparseArray;
 	}
 	
 	public int addIncomingPlayer() {
-		for (int i = 0; i < playersToEnterInGame.size(); i++) {
-			Player p = playersToEnterInGame.get(i);
-			if (p != null) {
-				playersToEnterInGame.delete(p.getId());
-				playersAlive.put(p.getId(), p);
-				checkIfPlayerCanPlay(p);
-				return p.getId();
-			}
+		Log.i("adding incoming player", "size: " + playersToEnterInGame.size());
+		int playerId = 0;
+		for (Player p : playersToEnterInGame.values()) {
+			playersAlive.put(p.getId(), p);
+			checkIfPlayerCanPlay(p);
+			playerId = p.getId();
+			break;
+		}
+		if(playerId != 0 ){
+			playersToEnterInGame.remove(playerId);
 		}
 		return 0;		
 	}
