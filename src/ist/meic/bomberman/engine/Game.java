@@ -542,6 +542,7 @@ import android.util.Log;
 		}
 		if(playerId != 0 ){
 			playersToEnterInGame.remove(playerId);
+			return playerId;
 		}
 		return 0;		
 	}
