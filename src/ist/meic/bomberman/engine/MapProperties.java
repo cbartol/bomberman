@@ -22,6 +22,7 @@ public class MapProperties implements Serializable{
 	private int robotKilledPoints;
 	private int playerKilledPoints;
 	private int level;
+	private int maxPlayers;
 	
 	public MapProperties(Activity activity, int level) {
 		readPropertiesFile(activity, level);
@@ -62,6 +63,7 @@ public class MapProperties implements Serializable{
 			robotSpeed = Double.parseDouble(mapProperties.getProperty("robot.speed"));
 			robotKilledPoints = Integer.parseInt(mapProperties.getProperty("robot.killed.points"));
 			playerKilledPoints = Integer.parseInt(mapProperties.getProperty("opponent.killed.points"));
+			maxPlayers = Integer.parseInt(mapProperties.getProperty("max.players"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -101,5 +103,9 @@ public class MapProperties implements Serializable{
 	}
 	public int getLevel(){
 		return level;
+	}
+
+	public int getMaxPlayers() {
+		return maxPlayers;
 	}
 }

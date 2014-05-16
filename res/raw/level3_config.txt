@@ -6,3 +6,4 @@ explosion.range=3
 robot.speed=2
 robot.killed.points=10
 opponent.killed.points=100
+max.players=4

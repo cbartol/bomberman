@@ -182,6 +182,7 @@ import android.util.Log;
 			}
 		}
 		stripeSize = walls.get(0).getImage().getWidth();
+		Log.i("Game", "number of player that can join: " + playersToEnterInGame.size());
 	}
 	
 	private void setMapBackgroud(Activity a){
@@ -214,7 +215,7 @@ import android.util.Log;
 			for (Integer playerId : playerIds) {
 				killPlayer(playerId);
 			}
-			moveRobot(robot.getId());
+			moveRobot(robot);
 		}
 	}
 	
@@ -491,14 +492,18 @@ import android.util.Log;
 	
 	public void pausePlayer(int playerId){
 		Player p = playersAlive.get(playerId);
-		map[p.getY()][p.getX()] = EMPTY;
-		pausedPlayers.put(playerId, p);
+		if(p != null){
+			map[p.getY()][p.getX()] = EMPTY;
+			pausedPlayers.put(playerId, p);
+		}
 	}
 	
 	public void resumePlayer(final int playerId){
 		final Player p = pausedPlayers.get(playerId);
-		checkIfPlayerCanPlay(p);
-		pausedPlayers.remove(playerId);
+		if(p != null){
+			checkIfPlayerCanPlay(p);
+			pausedPlayers.remove(playerId);
+		}
 		//activity.draw(isTheEndOfTheGame()); // it's not mandatory.
 	}
 	
@@ -572,7 +577,7 @@ import android.util.Log;
 		// .....
 	}
 	
-	protected void moveRobot(int id){
+	protected void moveRobot(Robot robot){
 		// .....
 	}
 	

@@ -1,8 +1,9 @@
 package ist.meic.bomberman.engine;
 
+import ist.meic.bomberman.R;
+
 import java.io.Serializable;
 
-import ist.meic.bomberman.R;
 import android.content.Context;
 
 public class Robot extends Entity implements Serializable {

@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.util.Log;
 
 public class ClientGame extends Thread implements IGame {
 	private ClientReceiveActionsThread receiveThread;
@@ -66,41 +67,34 @@ public class ClientGame extends Thread implements IGame {
 			walls = state.getWalls();
 			for (Wall wall : walls) {
 				wall.setContext(activity);
-				wall.reloadImage();
 			}
 			obstacles = Collections.synchronizedMap(new TreeMap<Integer, Obstacle>());
 			for (Obstacle obstacle : state.getObstacles()) {
 				obstacles.put(obstacle.getId(), obstacle);
 				obstacle.setContext(activity);
-				obstacle.reloadImage();
 			}
 			players = state.getPlayers();
 			for (Player player : players.values()) {
 				player.setContext(activity);
-				player.reloadImage();
 			}
 			playersAlive = state.getPlayersAlive();
 			for (Player player : playersAlive.values()) {
 				player.setContext(activity);
-				player.reloadImage();
 			}
 			robots = state.getRobots();
 			for (Robot robot : robots.values()) {
 				robot.setContext(activity);
-				robot.reloadImage();
 			}
 			
 			bombs = Collections.synchronizedMap(new TreeMap<Integer, Bomb>());
 			for (Bomb bomb : state.getBombs()) {
 				bombs.put(bomb.getExplosionId(), bomb);
 				bomb.setContext(activity);
-				bomb.reloadImage();
 			}
 			explosionParts = state.getExplosionParts();
 			for (List<ExplosionPart> explosionPartGroup : explosionParts.values()) {
 				for (ExplosionPart explosionPart : explosionPartGroup) {
 					explosionPart.setContext(activity);
-					explosionPart.reloadImage();
 				}
 			}
 			width = state.getMapWidth();
@@ -198,14 +192,18 @@ public class ClientGame extends Thread implements IGame {
 			case Game.PLAYER:
 				Player player = (Player) object;
 				players.put(player.getId(), player);
+				playersAlive.put(player.getId(), player);
+				Log.i("MOVE", "Moving robot id:" + player.getId());
 				break;
 			case Game.ROBOT:
 				Robot robot = (Robot) object;
 				robots.put(robot.getId(), robot);
+				Log.i("MOVE", "Moving player id:" + robot.getId());
 				break;
 			case Game.BOMB:
 				Bomb bomb = (Bomb) object; 
 				bombs.put(bomb.getExplosionId(), bomb);
+				Log.i("MOVE", "dropping bomb id:" + bomb.getExplosionId());
 				break;
 			default:
 				// ????

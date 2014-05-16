@@ -45,7 +45,7 @@ public abstract class DrawableObject implements Serializable{
 		return image;
 	}
 	
-	public void reloadImage(){
+	private void reloadImage(){
 		setImage(imageResId);
 	}
 	
@@ -69,5 +69,6 @@ public abstract class DrawableObject implements Serializable{
 	}
 	public void setContext(Context c){
 		this.context = c;
+		reloadImage();
 	}
 }
