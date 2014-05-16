@@ -1,5 +1,9 @@
-package ist.meic.bomberman;
+package ist.meic.bomberman.multiplayer;
 
+import ist.meic.bomberman.R;
+import ist.meic.bomberman.R.id;
+import ist.meic.bomberman.R.integer;
+import ist.meic.bomberman.R.layout;
 import ist.meic.bomberman.engine.MapProperties;
 
 import java.net.Inet4Address;

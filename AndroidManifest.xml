@@ -39,7 +39,7 @@
                 android:value="ist.meic.bomberman.MainActivity" />
         </activity>
         <activity
-            android:name="ist.meic.bomberman.MultiplayerActivity"
+            android:name="ist.meic.bomberman.multiplayer.MultiplayerActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:parentActivityName="ist.meic.bomberman.MainActivity"
@@ -61,44 +61,43 @@
                 android:value="ist.meic.bomberman.SingleplayerActivity" />
         </activity>
         <activity
-            android:name="ist.meic.bomberman.CreateServerActivity"
+            android:name="ist.meic.bomberman.multiplayer.CreateServerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_create_server"
             android:screenOrientation="portrait"
-            android:parentActivityName="ist.meic.bomberman.MultiplayerActivity"
+            android:parentActivityName="ist.meic.bomberman.multiplayer.MultiplayerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ist.meic.bomberman.MultiplayerActivity" />
         </activity>
         <activity
-            android:name="ist.meic.bomberman.FindServerActivity"
+            android:name="ist.meic.bomberman.multiplayer.FindServerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_find_server"
             android:screenOrientation="portrait"
-            android:parentActivityName="ist.meic.bomberman.MultiplayerActivity"
+            android:parentActivityName="ist.meic.bomberman.multiplayer.MultiplayerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ist.meic.bomberman.MultiplayerActivity" />
         </activity>
         <activity
-            android:name="ist.meic.bomberman.MultiplayerClientGameActivity"
+        	android:name="ist.meic.bomberman.multiplayer.MultiplayerClientGameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_client_game"
             android:screenOrientation="portrait"
-            android:parentActivityName="ist.meic.bomberman.FindServerActivity"
+            android:parentActivityName="ist.meic.bomberman.multiplayer.FindServerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ist.meic.bomberman.FindServerActivity" />
         </activity>
         <activity
-            android:name="ist.meic.bomberman.MultiplayerServerGameActivity"
+  			android:name="ist.meic.bomberman.multiplayer.MultiplayerServerGameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_server_game"
-            android:screenOrientation="portrait"
-            android:parentActivityName="ist.meic.bomberman.CreateServerActivity"
+    		android:parentActivityName="ist.meic.bomberman.multiplayer.CreateServerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

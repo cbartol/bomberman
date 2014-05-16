@@ -1,5 +1,6 @@
-package ist.meic.bomberman;
+package ist.meic.bomberman.multiplayer;
 
+import ist.meic.bomberman.GameActivity;
 import ist.meic.bomberman.engine.ClientGame;
 import android.os.Bundle;
 

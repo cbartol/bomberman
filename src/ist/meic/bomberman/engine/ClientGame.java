@@ -1,7 +1,7 @@
 package ist.meic.bomberman.engine;
 
-import ist.meic.bomberman.MultiplayerClientGameActivity;
 import ist.meic.bomberman.multiplayer.GameState;
+import ist.meic.bomberman.multiplayer.MultiplayerClientGameActivity;
 import ist.meic.bomberman.wifi.ClientReceiveActionsThread;
 import ist.meic.bomberman.wifi.PlayerAction;
 
