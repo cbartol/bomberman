@@ -18,12 +18,14 @@ public class ServerGame extends Game {
 	
 	// client sockets to update the game state
 	private List<Socket> clientsSockets;
+	private List<ObjectOutputStream> outStreams;
 	private MainThreadServer mainThreadServer;
 
 	public ServerGame(GameActivity a, GameMapView gameArea,
 			MapProperties mapProp, int maxPlayers) {
 		super(a, gameArea, mapProp, maxPlayers);
 		clientsSockets = new LinkedList<Socket>();
+		outStreams = new LinkedList<ObjectOutputStream>();
 		mainThreadServer = new MainThreadServer(this);
 		mainThreadServer.start();
 	}
@@ -31,16 +33,17 @@ public class ServerGame extends Game {
 	@Override
 	public synchronized void movePlayer(int id, Direction direction) {
 		super.movePlayer(id, direction);
-		ObjectOutputStream os;
 		Log.i("MOVING PLAYER", "moving player "+ id + " to " + clientsSockets.size() + " clients");
 		/* Send message to players with the movement */
-		synchronized (clientsSockets) {
-			for (Socket s : clientsSockets){
+		synchronized (outStreams) {
+			for (ObjectOutputStream s : outStreams){
 				try {
-					os = new ObjectOutputStream(s.getOutputStream());
-					os.writeInt(ServerUpdateType.MOVE.ordinal());
-					os.writeBoolean(isTheEndOfTheGame());
-					os.writeObject(super.getPlayer(id));
+					s.writeInt(ServerUpdateType.MOVE.ordinal());
+					s.writeBoolean(isTheEndOfTheGame());
+					Player p = super.getPlayer(id);
+					Log.i("MOVE", "Sending player " + p.getId() + " X:" + p.getX() + " Y:" + p.getY());
+					s.writeObject(p);
+					s.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -50,16 +53,14 @@ public class ServerGame extends Game {
 
 	@Override
 	protected void destroyObject(char type, int id){
-		ObjectOutputStream os;
 		Log.i("REMOVE OBJECT", "destroying object type:" + type + " id:" + id + " to " + clientsSockets.size() + " clients");
-		synchronized (clientsSockets) {
-			for (Socket s : clientsSockets){
+		synchronized (outStreams) {
+			for (ObjectOutputStream s : outStreams){
 				try {
-					os = new ObjectOutputStream(s.getOutputStream());
-					os.writeInt(ServerUpdateType.REMOVE.ordinal());
-					os.writeBoolean(isTheEndOfTheGame());
-					os.writeChar(type);
-					os.writeInt(id);
+					s.writeInt(ServerUpdateType.REMOVE.ordinal());
+					s.writeBoolean(isTheEndOfTheGame());
+					s.writeChar(type);
+					s.writeInt(id);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -69,15 +70,13 @@ public class ServerGame extends Game {
 
 	@Override
 	protected void destroyExplosion(int explosionId){
-		ObjectOutputStream os;
 		Log.i("REMOVE EXPLOSION", "removing explosion:" + explosionId + " to " + clientsSockets.size() + " clients");
-		synchronized (clientsSockets) {
-			for (Socket s : clientsSockets){
+		synchronized (outStreams) {
+			for (ObjectOutputStream s : outStreams){
 				try {
-					os = new ObjectOutputStream(s.getOutputStream());
-					os.writeInt(ServerUpdateType.REMOVE_EXPLOSION.ordinal());
-					os.writeBoolean(isTheEndOfTheGame());
-					os.writeInt(explosionId);
+					s.writeInt(ServerUpdateType.REMOVE_EXPLOSION.ordinal());
+					s.writeBoolean(isTheEndOfTheGame());
+					s.writeInt(explosionId);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -87,16 +86,15 @@ public class ServerGame extends Game {
 	
 	@Override
 	protected void moveRobot(Robot robot){
-		ObjectOutputStream os;
 		Log.i("MOVING ROBOT", "moving robot "+ robot.getId() + " to " + clientsSockets.size() + " clients");
 		/* Send message to players with the movement */
-		synchronized (clientsSockets) {
-			for (Socket s : clientsSockets){
+		synchronized (outStreams) {
+			for (ObjectOutputStream s : outStreams){
 				try {
-					os = new ObjectOutputStream(s.getOutputStream());
-					os.writeInt(ServerUpdateType.MOVE.ordinal());
-					os.writeBoolean(isTheEndOfTheGame());
-					os.writeObject(robot);
+					s.writeInt(ServerUpdateType.MOVE.ordinal());
+					s.writeBoolean(isTheEndOfTheGame());
+					Log.i("MOVE", "Sending robot " + robot.getId() + " X:" + robot.getX() + " Y:" + robot.getY());
+					s.writeObject(robot);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -106,16 +104,14 @@ public class ServerGame extends Game {
 	
 	@Override
 	protected void sendExplosion(List<ExplosionPart> parts) {
-		ObjectOutputStream os;
 		/* Send message to players with the movement */
 		Log.i("PUT EXPLOSION", "sending explosion: "+ parts.get(0).getExplosionId() + " size: " + parts.size() + " to " + clientsSockets.size() + " clients");
-		synchronized (clientsSockets) {
-			for (Socket s : clientsSockets){
+		synchronized (outStreams) {
+			for (ObjectOutputStream s : outStreams){
 				try {
-					os = new ObjectOutputStream(s.getOutputStream());
-					os.writeInt(ServerUpdateType.PUT_EXPLOSION.ordinal());
-					os.writeBoolean(isTheEndOfTheGame());
-					os.writeObject(parts);
+					s.writeInt(ServerUpdateType.PUT_EXPLOSION.ordinal());
+					s.writeBoolean(isTheEndOfTheGame());
+					s.writeObject(parts);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -125,15 +121,13 @@ public class ServerGame extends Game {
 	
 	@Override
 	protected void sendBomb(Bomb bomb) {
-		ObjectOutputStream os;
 		/* Send message to players with the movement */
-		synchronized (clientsSockets) {
-			for (Socket s : clientsSockets){
+		synchronized (outStreams) {
+			for (ObjectOutputStream s : outStreams){
 				try {
-					os = new ObjectOutputStream(s.getOutputStream());
-					os.writeInt(ServerUpdateType.MOVE.ordinal());
-					os.writeBoolean(isTheEndOfTheGame());
-					os.writeObject(bomb);
+					s.writeInt(ServerUpdateType.MOVE.ordinal());
+					s.writeBoolean(isTheEndOfTheGame());
+					s.writeObject(bomb);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -143,6 +137,12 @@ public class ServerGame extends Game {
 	
 	public void addClient(Socket socketClient) {
 			clientsSockets.add(socketClient);
+			try {
+				ObjectOutputStream os = new ObjectOutputStream(socketClient.getOutputStream());
+				os.flush();
+				outStreams.add(os);
+			} catch (Exception e) {
+			}
 	}
 	
 	@Override

@@ -117,7 +117,14 @@ public class ClientGame extends Thread implements IGame {
 				e1.printStackTrace();
 			}
 		}
-		
+		try {
+			synchronized (this) {
+				this.wait();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -189,25 +196,28 @@ public class ClientGame extends Thread implements IGame {
 		switch (type) {
 			case Game.PLAYER:
 				Player player = (Player) object;
+				players.remove(player.getId());
 				players.put(player.getId(), player);
+				playersAlive.remove(player.getId());
 				playersAlive.put(player.getId(), player);
-				Log.i("MOVE", "Moving player id:" + player.getId());
+				Log.i("MOVE", "Moving player id:" + player.getId() + " X: " + player.getX() +" Y:" + player.getY());
 				break;
 			case Game.ROBOT:
 				Robot robot = (Robot) object;
+				robots.remove(robot.getId());
 				robots.put(robot.getId(), robot);
-				Log.i("MOVE", "Moving robot id:" + robot.getId());
+				Log.i("MOVE", "Moving robot id:" + robot.getId() + " X: " + robot.getX() +" Y:" + robot.getY());
 				break;
 			case Game.BOMB:
 				Bomb bomb = (Bomb) object; 
+				bombs.remove(bomb.getExplosionId());
 				bombs.put(bomb.getExplosionId(), bomb);
-				Log.i("MOVE", "dropping bomb id:" + bomb.getExplosionId());
+				Log.i("MOVE", "dropping bomb id:" + bomb.getExplosionId() + " X: " + bomb.getX() +" Y:" + bomb.getY());
 				break;
 			default:
 				// ????
 				break;
 		}
-		// change the list
 		activity.draw(isEndOftheGame);
 	}
 
